@@ -71,7 +71,7 @@ bool Circle::killUntilLeftNum()
 {
 	Passenger* temp = head;
 	int killNum = 0;
-	while (leftNum != killNum)
+	while (leftNum != totalNum-killNum)
 	{
 		int count = 1;
 		while (count != deathNum)//找到本次要被杀的人
@@ -82,6 +82,7 @@ bool Circle::killUntilLeftNum()
 		++killNum;
 		temp = killSomeone(temp,killNum);//杀掉此人
 	}
+	return true;
 }
 
 Passenger* Circle::killSomeone(Passenger* passenger, int killNum)
@@ -93,7 +94,7 @@ Passenger* Circle::killSomeone(Passenger* passenger, int killNum)
 	if (passenger == head)//防止删除节点时丢失头结点
 		head = temp;
 
-	cout << "第" << killNum << "死者位置是：\t" << passenger->getID() << endl;
+	cout << "第" << killNum << "个死者位置是：\t" << passenger->getID() << endl;
 	delete(passenger);
 	passenger = NULL;
 
@@ -103,6 +104,7 @@ Passenger* Circle::killSomeone(Passenger* passenger, int killNum)
 void Circle::showAll()
 {
 	Passenger* temp = head;
+	cout << endl;
 	cout << "最后剩下：\t" << leftNum << "人" << endl;
 	cout << "剩余的生者位置为：\t" << temp->getID();
 	temp = temp->next;
