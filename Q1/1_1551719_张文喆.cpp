@@ -10,6 +10,11 @@ bool fix(Database* database);
 int main()
 {
 	auto database = new Database();
+	if (database == NULL)
+	{
+		cout << "内存空间不足！" << endl;
+		return 1;
+	}
 	cout << "首先请建立考生信息系统!" << endl;
 	cout << "请输入考生人数：" << endl;
 	int numOfStu;
@@ -26,6 +31,11 @@ int main()
 		cin >> num >> name >> sex >> age >> job;
 
 		auto temp = new Student(num, name, sex, age, job);
+		if (temp == NULL)
+		{
+			cout << "内存空间不足！" << endl;
+			return 1;
+		}
 		database->insert(count, temp);
 		++count;
 		--numOfStu;
@@ -81,6 +91,11 @@ bool insert(Database* database)
 	cin >> num >> name >> sex >> age >> job;
 
 	auto stu = new Student(num, name, sex, age, job);
+	if (stu == NULL)
+	{
+		cout << "内存空间不足！" << endl;
+		return false;
+	}
 	return database->insert(pos, stu);
 }
 
@@ -97,6 +112,12 @@ bool find(Database* database)
 	cout << "请输入要查找的考生的考号！" << endl;
 	string num;
 	cin >> num;
+	auto stu = database->find(num);
+	if (stu == NULL)
+	{
+		cout << "查无此人！" << endl;
+		return false;
+	}
 	cout << database->find(num)->getInfo() << endl;
 	return true;
 }
