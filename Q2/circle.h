@@ -32,6 +32,7 @@ bool Passenger::linkNext(Passenger* nextPassenger)
 class Circle {
 public:
 	Circle(int num, int start, int deathNum, int leftNum);
+	~Circle();
 	bool killUntilLeftNum();
 	Passenger* killSomeone(Passenger* passenger, int killNum);
 	void showAll();
@@ -70,6 +71,17 @@ Circle::Circle(int num, int start, int deathNum, int leftNum)
 	this->totalNum = num;
 	this->deathNum = deathNum;
 	this->leftNum = leftNum;
+}
+
+Circle::~Circle()
+{
+	while (head != NULL)
+	{
+		Passenger* temp = head;
+		head = head->next;
+		delete temp;
+		temp = NULL;
+	}
 }
 
 bool Circle::killUntilLeftNum()
