@@ -18,9 +18,20 @@ Field::Field()
 	:row(7), column(7)
 {
 	field = new int *[row];
+	if (field == NULL)
+	{
+		cout << "内存不足！" << endl;
+		return;
+	}
+
 	for (int i = 0; i < row; ++i)
 	{
 		field[i] = new int[column];
+		if (field[i] == NULL)
+		{
+			cout << "内存不足！" << endl;
+			return;
+		}
 	}
 
 	for (int i = 0; i < row; ++i)
@@ -99,7 +110,11 @@ Point* Point::linkNext(int x, int y)
 
 	Point* temp = new Point(x, y);
 	if (temp == NULL)//内存空间不足
+	{
+		cout << "内存不足！" << endl;
 		return NULL;
+	}
+
 	temp->front = this;
 	this->next = temp;
 	return temp;
@@ -111,6 +126,11 @@ public:
 	: endX(endX),endY(endY)
 	{
 		head = new Point(startX, startY);
+		if (head == NULL)
+		{
+			cout << "内存不足！" << endl;
+			return;
+		}
 	}
 	~Knight();
 	bool findWay(Field* field);
