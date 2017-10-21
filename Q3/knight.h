@@ -5,6 +5,7 @@ using namespace std;
 class Field {
 public:
 	Field();
+	~Field();
 	bool canAccess(int x, int y);
 	void showMap();
 private:
@@ -28,6 +29,15 @@ Field::Field()
 
 	field[1][1] = field[2][1] = field[3][1] = field[3][2] = field[3][3]
 		= field[4][3] = field[4][4] = field[4][5] = field[5][5] = 1;//1代表可以通行，0代表不可通行
+}
+
+Field::~Field()
+{
+	for (int i = 0; i < row; ++i)
+	{
+		delete[] field[i];
+		field[i] = NULL;
+	}
 }
 
 bool Field::canAccess(int x, int y)
@@ -102,6 +112,7 @@ public:
 	{
 		head = new Point(startX, startY);
 	}
+	~Knight();
 	bool findWay(Field* field);
 	void showAll();
 private:
@@ -109,6 +120,17 @@ private:
 	int endX;
 	int endY;
 };
+
+Knight::~Knight()
+{
+	while (head != NULL)
+	{
+		Point* temp = head;
+		head = head->next;
+		delete temp;
+		temp = NULL;
+	}
+}
 
 bool Knight::findWay(Field* field)
 {
