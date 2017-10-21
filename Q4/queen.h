@@ -5,6 +5,7 @@ using namespace std;
 class Chess {
 public:
 	Chess(const int size);
+	~Chess();
 	void showChess();
 	bool checkPoint(const int x, const int y);
 	int size;
@@ -23,6 +24,15 @@ Chess::Chess(const int size)
 	for (int i = 0;i < size;++i)
 		for (int j = 0;j < size;++j)
 			field[i][j] = 0;//0代表该格子无皇后，1代表有皇后
+}
+
+Chess::~Chess()
+{
+	for (int i = 0;i < size;++i)
+	{
+		delete[] field[i];
+		field[i] = NULL;
+	}
 }
 
 void Chess::showChess()
