@@ -150,7 +150,7 @@ Openchain::Openchain(const int size)
 {
 	//head = (Block*)malloc(sizeof(Block)*size);
 	//上面这种方法无法初始化Block对象
-	head = new Block[10];
+	head = new Block[size];
 	if (head == NULL)
 	{
 		cerr << "内存不足！" << endl;
@@ -234,6 +234,119 @@ bool Openchain::doubleHash(const int num)
 void Openchain::showAll()
 {
 	for (int i = 0;i < size;++i)
+	{
+		cout << i << " : ";
+		if (head[i].isEmpty == false)
+			cout << head[i].num << endl;
+		else
+			cout << "NULL" << endl;
+	}
+}
+
+/*==================================以上为开放定址散列表的实现==================================*/
+
+/*==================================以下为再散列散列表的实现==================================*/
+
+class Rehashchain {
+public:
+	Rehashchain(const int);
+	~Rehashchain() { delete[] head; }
+	int hash(const int num) { return (num%capacity); }
+	bool insert(const int);
+	bool rehash();
+	int getMaxPrime(int);
+	void showAll();
+private:
+	int size;
+	int capacity;
+	float lambda;
+	Block* head;
+};
+
+Rehashchain::Rehashchain(const int capacity)
+	:size(0), capacity(capacity), lambda(0)
+{
+	head = new Block[capacity];
+	if (head == NULL)
+	{
+		cerr << "内存不足！" << endl;
+		return;
+	}
+}
+
+bool Rehashchain::insert(const int num)//使用线性探测
+{
+	const int index = hash(num);
+	for (int temp = index;temp + 1 != index;++temp)
+	{
+		if (temp == capacity)//越界之后返回0处
+			temp = 0;
+
+		if (head[temp].isEmpty == true)
+		{
+			head[temp].isEmpty = false;
+			head[temp].num = num;
+			++size;
+			lambda = (float)size / (float)capacity;
+
+			if(lambda > 0.7)
+				rehash();
+			return true;
+		}
+	}
+	return false;//表已满
+}
+
+bool Rehashchain::rehash()
+{
+	capacity = getMaxPrime(capacity * 2);
+	Block* temp = head;
+	head = new Block[capacity];
+	if (head == NULL)
+	{
+		cerr << "内存不足！" << endl;
+		return false;
+	}
+	
+	int i = 0, count = size;
+	size = 0;
+	while (count)
+	{
+		if (temp[i].isEmpty == false)
+		{
+			insert(temp[i].num);
+			--count;
+		}
+		++i;
+	}
+	return true;
+
+}
+
+int Rehashchain::getMaxPrime(int num)//保证num是偶数（num = 2*capacity）
+{
+	if(num != 2)//2是素数
+		num += 1;//将num变为奇数
+	int prime = num;
+
+	while (1)
+	{
+		int i;
+		for (i = 2;i < sqrt(prime);++i)
+		{
+			if (prime % i == 0)//不是素数
+				break;
+		}
+		if (i > sqrt(prime))
+			return prime;
+		else
+			prime += 2;//素数必不为偶数
+	}
+}
+
+void Rehashchain::showAll()
+{
+	for (int i = 0;i < capacity;++i)
 	{
 		cout << i << " : ";
 		if (head[i].isEmpty == false)

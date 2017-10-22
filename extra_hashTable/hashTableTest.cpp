@@ -2,11 +2,13 @@
 
 void testSepchain();
 void testOpenchain();
+void testRehashchain();
 
 int main()
 {
 	testSepchain();
 	testOpenchain();
+	testRehashchain();
 
 	return 0;
 }
@@ -68,6 +70,27 @@ void testOpenchain()
 	test->doubleHash(69);
 
 	cout << endl << "double hashing result:" << endl << endl;
+	test->showAll();
+	delete test;
+	test = NULL;
+
+	getchar();
+}
+
+void testRehashchain()
+{
+	const int capacity = 7;
+	auto test = new Rehashchain(capacity);
+
+	test->insert(13);
+	test->insert(15);
+	test->insert(24);
+	test->insert(6);
+
+	cout << endl << "rehashing table_1:" << endl << endl;
+	test->showAll();
+	test->insert(23);
+	cout << endl << "rehashing table_2:" << endl << endl;
 	test->showAll();
 	delete test;
 	test = NULL;
