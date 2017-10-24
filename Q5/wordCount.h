@@ -367,6 +367,11 @@ bool Paragraph::wordInLine()
 	if (choice == 'a')
 	{
 		Linklist* list = new Linklist(word, 0);
+		if (list == NULL)
+		{
+			cerr << "空间不足！" << endl;
+			exit(1);
+		}
 		while (getline(outFile, line))
 			list->checkWord(line);
 		list->showAll(fileName, choice);
@@ -378,6 +383,11 @@ bool Paragraph::wordInLine()
 		{
 			++i;
 			Linklist* list = new Linklist(word, i);
+			if (list == NULL)
+			{
+				cerr << "空间不足！" << endl;
+				exit(1);
+			}
 			list->checkWord(line);
 			list->showAll(fileName, choice);
 			delete list;
