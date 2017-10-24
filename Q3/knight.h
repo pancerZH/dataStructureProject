@@ -20,8 +20,8 @@ Field::Field()
 	field = new int *[row];
 	if (field == NULL)
 	{
-		cout << "内存不足！" << endl;
-		return;
+		cerr << "内存不足！" << endl;
+		exit(1);
 	}
 
 	for (int i = 0; i < row; ++i)
@@ -29,8 +29,8 @@ Field::Field()
 		field[i] = new int[column];
 		if (field[i] == NULL)
 		{
-			cout << "内存不足！" << endl;
-			return;
+			cerr << "内存不足！" << endl;
+			exit(1);
 		}
 	}
 
@@ -111,8 +111,8 @@ Point* Point::linkNext(int x, int y)
 	Point* temp = new Point(x, y);
 	if (temp == NULL)//内存空间不足
 	{
-		cout << "内存不足！" << endl;
-		return NULL;
+		cerr << "内存不足！" << endl;
+		exit(1);
 	}
 
 	temp->front = this;
@@ -128,8 +128,8 @@ public:
 		head = new Point(startX, startY);
 		if (head == NULL)
 		{
-			cout << "内存不足！" << endl;
-			return;
+			cerr << "内存不足！" << endl;
+			exit(1);
 		}
 	}
 	~Knight();
@@ -173,8 +173,8 @@ bool Knight::findWay(Field* field)
 
 		if (temp == NULL)
 		{
-			cout << "内存空间不足！" << endl;
-			return false;
+			cerr << "内存空间不足！" << endl;
+			exit(1);
 		}
 	}
 	return true;

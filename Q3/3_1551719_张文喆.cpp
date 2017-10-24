@@ -4,6 +4,11 @@ int main()
 {
 	auto knight = new Knight(1, 1, 5, 5);
 	auto field = new Field();
+	if (knight == NULL || field == NULL)
+	{
+		cerr << "¿Õ¼ä²»×ã£¡" << endl;
+		exit(1);
+	}
 
 	field->showMap();
 	knight->findWay(field);
