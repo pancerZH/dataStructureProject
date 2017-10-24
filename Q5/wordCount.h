@@ -24,8 +24,7 @@ public:
 
 class Sepchain {
 public:
-	Sepchain(const int size)
-		:size(size) {head = new Node[size];}
+	Sepchain(const int size);
 	~Sepchain();
 	int hash(const string);
 	bool insert(const string);
@@ -34,6 +33,17 @@ private:
 	int size;
 	Node* head;
 };
+
+Sepchain::Sepchain(const int size)
+	:size(size)
+{
+	head = new Node[size];
+	if (head == NULL)
+	{
+		cerr << "空间不足！" << endl;
+		exit(1);
+	}
+}
 
 Sepchain::~Sepchain()
 {
@@ -84,7 +94,7 @@ bool Sepchain::insert(const string word)
 		if (temp == NULL)
 		{
 			cerr << "空间不足！" << endl;
-			return false;
+			exit(1);
 		}
 		previous->next = temp;
 		return true;
@@ -174,7 +184,7 @@ bool Linklist::insert(const int pos)
 	if (temp == NULL)
 	{
 		cerr << "空间不足！" << endl;
-		return false;
+		exit(1);
 	}
 	if (previous != NULL)
 		previous->next = temp;
@@ -239,7 +249,7 @@ Paragraph::Paragraph()
 	if (table == NULL)
 	{
 		cerr << "空间不足！" << endl;
-		return;
+		exit(1);
 	}
 }
 
@@ -254,7 +264,7 @@ bool Paragraph::buildPara()
 	if (inFile.is_open() == false)
 	{
 		cerr << "创建文件失败！" << endl;
-		return false;
+		exit(2);
 	}
 
 	char c = 'n';
@@ -285,7 +295,7 @@ bool Paragraph::countWords()
 	if (outFile.is_open() == false)
 	{
 		cerr << "文件不存在或打开失败！" << endl;
-		return false;
+		exit(2);
 	}
 
 	if (tableSize != 0)//清除旧表
@@ -295,7 +305,7 @@ bool Paragraph::countWords()
 		if (table == NULL)
 		{
 			cerr << "空间不足！" << endl;
-			return false;
+			exit(1);
 		}
 	}
 
@@ -334,7 +344,7 @@ bool Paragraph::wordInLine()
 	if (outFile.is_open() == false)
 	{
 		cerr << "文件不存在或打开失败！" << endl;
-		return false;
+		exit(2);
 	}
 
 	string word;
