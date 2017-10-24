@@ -12,8 +12,8 @@ int main()
 	auto database = new Database();
 	if (database == NULL)
 	{
-		cout << "内存空间不足！" << endl;
-		return 1;
+		cerr << "内存空间不足！" << endl;
+		exit(1);
 	}
 	cout << "首先请建立考生信息系统!" << endl;
 	cout << "请输入考生人数：" << endl;
@@ -33,8 +33,8 @@ int main()
 		auto temp = new Student(num, name, sex, age, job);
 		if (temp == NULL)
 		{
-			cout << "内存空间不足！" << endl;
-			return 1;
+			cerr << "内存空间不足！" << endl;
+			exit(1);
 		}
 		database->insert(count, temp);
 		++count;
@@ -93,8 +93,8 @@ bool insert(Database* database)
 	auto stu = new Student(num, name, sex, age, job);
 	if (stu == NULL)
 	{
-		cout << "内存空间不足！" << endl;
-		return false;
+		cerr << "内存空间不足！" << endl;
+		exit(1);
 	}
 	return database->insert(pos, stu);
 }
