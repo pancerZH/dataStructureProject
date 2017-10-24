@@ -4,8 +4,7 @@
 
 using namespace std;
 
-#define hashSize 10
-#define lineSize 110
+#define HASHSIZE 10
 #define SPACE 32
 #define END 0
 
@@ -257,7 +256,7 @@ private:
 Paragraph::Paragraph()
 	:tableSize(0)
 {
-	table = new Sepchain(hashSize);
+	table = new Sepchain(HASHSIZE);
 	if (table == NULL)
 	{
 		cerr << "空间不足！" << endl;
@@ -313,7 +312,7 @@ bool Paragraph::countWords()
 	if (tableSize != 0)//清除旧表
 	{
 		delete table;
-		table = new Sepchain(hashSize);//重新建立散列表
+		table = new Sepchain(HASHSIZE);//重新建立散列表
 		if (table == NULL)
 		{
 			cerr << "空间不足！" << endl;
