@@ -6,6 +6,8 @@ using namespace std;
 
 #define hashSize 10
 #define lineSize 110
+#define SPACE 32
+#define END 0
 
 /*============================以下为散列表的实现，它用于存放所有在文件中出现的单词及其出现次数=============================*/
 
@@ -199,7 +201,17 @@ void Linklist::checkWord(const string line)
 	int pos = 0;
 	while ((pos = line.find(word, pos)) != -1)//查找word下一个出现的位置
 	{
-		insert(pos);
+		char wordHead;
+		if (pos != 0)
+			wordHead = line[pos - 1];
+		else
+			wordHead = SPACE;
+		char wordTail = line[pos + word.length()];
+
+		if (wordHead == SPACE && (wordTail == SPACE || wordTail == END))//保证搜索到的是一个单词而不是单词的一部分字母
+		{
+			insert(pos);
+		}
 		pos += word.length();
 	}
 }
@@ -318,6 +330,7 @@ bool Paragraph::countWords()
 			++tableSize;
 	}
 
+	outFile.close();
 	table->showAll(fileName);
 	return true;
 }
@@ -372,6 +385,7 @@ bool Paragraph::wordInLine()
 		}
 	}
 
+	outFile.close();
 	return true;
 }
 
