@@ -24,8 +24,8 @@ bool Passenger::linkNext(Passenger* nextPassenger)
 	}
 	else
 	{
-		cout << "内存空间不足！" << endl;
-		return false;
+		cerr << "内存空间不足！" << endl;
+		exit(1);
 	}
 }
 
@@ -48,8 +48,8 @@ Circle::Circle(int num, int start, int deathNum, int leftNum)
 	head = new Passenger(1);//建立生死环
 	if (head == NULL)
 	{
-		cout << "内存空间不足！" << endl;
-		return;
+		cerr << "内存空间不足！" << endl;
+		exit(1);
 	}
 	Passenger* temp = head;
 	int count = 2;

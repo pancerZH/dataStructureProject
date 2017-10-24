@@ -14,6 +14,11 @@ int main()
 	cin >> leftNum;
 
 	auto circle = new Circle(totalNum, startNum, deathNum, leftNum);
+	if (circle == NULL)
+	{
+		cerr << "¿Õ¼ä²»×ã£¡" << endl;
+		exit(1);
+	}
 	circle->killUntilLeftNum();
 	circle->showAll();
 
