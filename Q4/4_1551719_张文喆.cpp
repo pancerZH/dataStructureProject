@@ -10,6 +10,11 @@ int main()
 
 	auto chess = new Chess(size);
 	auto queen = new Queen(chess);
+	if (chess == NULL || queen == NULL)
+	{
+		cerr << "¿Õ¼ä²»×ã£¡" << endl;
+		exit(1);
+	}
 	queen->fillChess(0);
 
 	getchar();

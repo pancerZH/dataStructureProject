@@ -16,9 +16,20 @@ Chess::Chess(const int size)
 	:size(size)
 {
 	field = new int *[size];
+	if (field == NULL)
+	{
+		cerr << "空间不足！" << endl;
+		exit(1);
+	}
+
 	for (int i = 0;i < size;++i)
 	{
 		field[i] = new int[size];
+		if (field[i] == NULL)
+		{
+			cerr << "空间不足！" << endl;
+			exit(1);
+		}
 	}
 
 	for (int i = 0;i < size;++i)
