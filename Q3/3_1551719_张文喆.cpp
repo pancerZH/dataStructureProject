@@ -10,8 +10,9 @@ int main()
 		exit(1);
 	}
 
-	field->showMap();
 	knight->findWay(field);
+	knight->drawSolutionOnMap(field);
+	field->showMap();
 	knight->showAll();
 	
 	getchar();
