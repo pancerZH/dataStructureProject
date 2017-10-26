@@ -17,39 +17,39 @@
   键入数据库大小后，程序便会根据数据库的大小要求输入考生信息。该要求会一直打印，直到输入了足够的数据。  
   输入的数据要求每项之间用任意个空格隔开。
 
-![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/build.PNG)
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/image/build.PNG)
 
 - 插入考生信息  
 
   说明：键入1，便会进入插入信息分支，程序会要求输入插入的考生的信息。  
   输入的数据要求每项之间用任意个空格隔开。
 
-![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/insert.PNG)
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/image/insert.PNG)
 
 - 删除考生信息
 
   说明：键入2，便会进入删除信息分支，程序会要求输入删除的考生的考号。
 
-![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/delete.PNG)
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/image/delete.PNG)
 
 - 查找考生信息 
 
   说明：键入3，便会进入查找信息分支，程序会要求输入查找的考生的考号，并返回找到的信息。
 
-![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/find.PNG)
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/image/find.PNG)
 
 - 修改考生信息
 
   说明：键入4，便会进入修改信息分支，程序会要求输入修改后的考生的信息。  
   输入的数据要求用任意个空格隔开，并且考生的考号无法修改，必须找到相同的考号才能修改。
 
-![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/fix.PNG)
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/image/fix.PNG)
 
 - 统计考生信息
 
   说明：键入5，便会进入统计信息分支，程序会打印整个数据库。
 
-![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/showall.PNG)
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/image/showall.PNG)
 
 
 ### 2. 概述  
@@ -310,30 +310,30 @@
 
   输入小于0的考生人数，一律视为0
   
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/buildError.PNG)
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/image/buildError.PNG)
   
 - #### 插入时输入错误的位置  
 
   输入小于1的位置，一律视为1  
   输入大于链表长度的位置，一律插在链表末尾
   
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/insertError.PNG)
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/image/insertError.PNG)
   
 - #### 试图删除不存在的考生  
 
   打印提示信息：“查无此人！”
   
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/deleteError.PNG)
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/image/deleteError.PNG)
   
 - #### 试图查找不存在的考生  
 
   打印提示信息：“查无此人！”
   
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/findError.PNG)
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/image/findError.PNG)
   
 - #### 试图修改不存在的考生  
 
   打印提示信息：“查无此人！”
   
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/fixError.PNG)
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/image/fixError.PNG)
  
