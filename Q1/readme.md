@@ -107,7 +107,203 @@
   |fix|bool|修改考生信息，修改成功返回true|
   |showAll|void|打印数据库中所有考生信息|
   
-### 4. 容错测试
+### 4. 核心代码解释
+
+- #### 建立数据库
+
+  建立数据库分为两步，为  
+  1. 建立一个空数据库  
+  2. 根据输入的数据库初始大小n执行n次插入操作  
+  	
+  ```c++  
+  auto database = new Database();//此处建立空数据库
+
+  ...
+
+  cout << "请输入考生人数：" << endl;
+  int numOfStu;
+  cin >> numOfStu;
+  if (numOfStu < 0)//若输入的人数小于0，则置人数为0
+    numOfStu = 0;
+
+  int count = 1;
+  while (numOfStu)
+  {
+    string num;
+    string name;
+    string sex;
+    string age;
+    string job;
+    cout << "请依次输入考生的考号，姓名，性别，年龄以及报考类别！" << endl;
+    cin >> num >> name >> sex >> age >> job;
+
+    auto temp = new Student(num, name, sex, age, job);
+
+    ...
+
+    database->insert(count, temp);//执行插入操作，共循环numOfStu次
+    ++count;
+    --numOfStu;
+  }
+  ```
+	
+- #### 插入操作
+
+  插入时，将插入的位置和指向已经建立好的Student对象的指针传入insert函数，由insert函数将对象插入到链表中合适的位置。  
+  插入链表时，分为三类情况  
+  1. 插入到链表的头部（即pos == 1）  
+  2. 插入到链表当中  
+  3. 插入到链表尾部  
+	
+  ```c++
+  bool Database::insert(const int pos, Student* contain)
+  {
+    Student* temp = head;
+
+    if (pos == 1 || head == NULL)//插在链表头部
+    {
+	    if (head != NULL)//数据库不为空，即头部有数据
+	    {
+		    contain->next = head;
+		    head = contain;
+	    }
+	    else
+		    head = contain;
+    }
+    else if (pos <= numOfData)//插在链表内部
+    {
+	    Student* temp = head;
+	    int count = 1;
+	    while (count < pos)
+	    {
+		    ++count;
+			  temp = temp->next;
+		  }
+		  contain->next = temp;
+		  contain->front = temp->front;
+		  temp->front->next = contain;
+	    temp->front = contain;
+	  }
+	  else//插在链表尾部
+	  {
+		  Student* temp = head;
+		  int count = 1;
+		  while (count < numOfData)//找到最后一个数据
+		  {
+			  ++count;
+			  temp = temp->next;
+		  }
+		  temp->next = contain;
+		  contain->front = temp;
+	  }
+
+	  ++numOfData;
+	  return true;
+  }
+  ```
+
+- 查找操作
+
+  由头指针head开始，沿着链表向后搜索，直到找到查询的考生或者抵达链表尾部。  
+  若找到考生，则返回指向考生节点的指针；否则返回NULL。
+  
+  ```c++
+  Student* Database::find(const string num)
+  {
+    Student* temp = head;
+
+    while (temp != NULL)
+    {
+      if (temp->getNum() == num)
+        break;
+      else
+        temp = temp->next;
+    }
+
+    return temp;
+  }
+  ```
+  
+- 删除操作
+
+  先使用find找到要删除的节点，若确实存在此节点（返回的指针不为NULL），则进行删除。  
+  进行删除操作时，也分为三类情况  
+  1. 要删除的节点位于链表头部  
+  2. 要删除的节点位于链表当中  
+  3. 要删除的节点位于链表尾部  
+  
+  ```c++
+  bool Database::deleteStu(const string num)
+  {
+    Student* temp = find(num);
+    if (temp != NULL)//找到考生
+    {
+      if (temp->front == NULL)//是链表的头部
+      {
+        head = temp->next;
+        if(temp->next != NULL)//链表未被删光
+          temp->next->front = NULL;
+      }
+      else if(temp->next == NULL)//是链表的尾部
+      {
+        temp->front->next = NULL;
+      }
+      else
+      {
+        temp->front->next = temp->next;
+        temp->next->front = temp->front;
+      }
+
+      delete(temp);
+      temp = NULL;
+      --numOfData;
+      return true;//删除成功
+    }
+    ...
+  }
+  ```
+ 
+- #### 修改操作
+
+  先通过传入的考生考号查找到考生所在的节点；若确实找到了考生，则调用Student类内部的函数对考生信息进行修改。  
+  
+  ```c++
+  bool Database::fix(const string num, const string name, const string sex, const string age, const string job)
+  {
+    Student* temp = find(num);
+
+    if (temp != NULL)//找到考生
+    {
+      temp->changeName(name);//调用Student类内部函数
+      temp->changeSex(sex);
+      temp->changeAge(age);
+      temp->changeJob(job);
+      return true;
+    }
+    ...
+  }
+  ```
+
+- #### 统计操作
+  
+  从头指针一直读取到链表尾部，在读取的同时输出考生信息。  
+  
+  ```c++
+  void Database::showAll()
+  {
+    Student* temp = head;
+    string info;
+    cout << "考号\t姓名\t性别\t年龄\t报考类别" << endl;
+    while (temp != NULL)
+    {
+      info = temp->getInfo();
+      cout << info << endl;
+      temp = temp->next;
+    }
+  }
+  ```
+
+### 5. 容错测试
 
 - #### 建立数据库时输入错误的考生人数大小  
 
