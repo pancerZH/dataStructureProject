@@ -10,13 +10,47 @@
 输入考 生信息；输出考生信息；查询考生信息；添加考生信息；修改考生信息；删除考生信息。 
  
 ### 1. 项目运行效果  
-- 建立数据库、插入和删除操作  
 
-![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/build-insert-delete.PNG)
+- 建立数据库  
 
-- 查找、修改和统计功能  
+  说明：程序一旦开始运行，便会要求建立数据库，并要求输入数据库的初始大小。  
+  键入数据库大小后，程序便会根据数据库的大小要求输入考生信息。该要求会一直打印，直到输入了足够的数据。  
+  输入的数据要求每项之间用任意个空格隔开。
 
-![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/find-fix-total.PNG)
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/build.PNG)
+
+- 插入考生信息  
+
+  说明：键入1，便会进入插入信息分支，程序会要求输入插入的考生的信息。  
+  输入的数据要求每项之间用任意个空格隔开。
+
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/insert.PNG)
+
+- 删除考生信息
+
+  说明：键入2，便会进入删除信息分支，程序会要求输入删除的考生的考号。
+
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/delete.PNG)
+
+- 查找考生信息 
+
+  说明：键入3，便会进入查找信息分支，程序会要求输入查找的考生的考号，并返回找到的信息。
+
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/find.PNG)
+
+- 修改考生信息
+
+  说明：键入4，便会进入修改信息分支，程序会要求输入修改后的考生的信息。  
+  输入的数据要求用任意个空格隔开，并且考生的考号无法修改，必须找到相同的考号才能修改。
+
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/fix.PNG)
+
+- 统计考生信息
+
+  说明：键入5，便会进入统计信息分支，程序会打印整个数据库。
+
+![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/showall.PNG)
+
 
 ### 2. 概述  
 - #### 项目要求及建议  
