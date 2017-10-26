@@ -110,20 +110,33 @@
 ### 4. 容错测试
 
 - #### 建立数据库时输入错误的考生人数大小  
+
   输入小于0的考生人数，一律视为0
+  
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/buildError.PNG)
   
 - #### 插入时输入错误的位置  
+
   输入小于1的位置，一律视为1  
   输入大于链表长度的位置，一律插在链表末尾
+  
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/insertError.PNG)
   
 - #### 试图删除不存在的考生  
+
   打印提示信息：“查无此人！”
   
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/deleteError.PNG)
+  
 - #### 试图查找不存在的考生  
+
   打印提示信息：“查无此人！”
+  
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/findError.PNG)
   
 - #### 试图修改不存在的考生  
+
   打印提示信息：“查无此人！”
-  
-- #### 测试结果
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/errorTest.PNG)
+  
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q1/fixError.PNG)
+ 
