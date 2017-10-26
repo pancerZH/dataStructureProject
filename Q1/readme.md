@@ -265,10 +265,11 @@
  
 - #### 修改操作
 
-  先通过传入的考生考号查找到考生所在的节点；若确实找到了考生，则调用Student类内部的函数对考生信息进行修改。  
+	先通过传入的考生考号查找到考生所在的节点；若确实找到了考生，则调用Student类内部的函数对考生信息进行修改。  
   
   ```c++
-  bool Database::fix(const string num, const string name, const string sex, const string age, const string job)
+  bool Database::fix(const string num, const string name, 
+	                   const string sex, const string age, const string job)
 	{
 		Student* temp = find(num);
 
