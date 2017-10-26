@@ -19,6 +19,8 @@ int main()
 	cout << "请输入考生人数：" << endl;
 	int numOfStu;
 	cin >> numOfStu;
+	if (numOfStu < 0)//若输入的人数小于0，则置人数为0
+		numOfStu = 0;
 	
 	int count = 1;
 	while (numOfStu)
@@ -28,6 +30,7 @@ int main()
 		string sex;
 		string age;
 		string job;
+		cout << "请依次输入考生的考号，姓名，性别，年龄以及报考类别！" << endl;
 		cin >> num >> name >> sex >> age >> job;
 
 		auto temp = new Student(num, name, sex, age, job);
@@ -68,6 +71,7 @@ int main()
 			break;
 		case '5':
 			database->showAll();
+			break;
 		default:
 			return 0;
 		}

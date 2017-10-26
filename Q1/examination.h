@@ -152,7 +152,11 @@ bool Database::deleteStu(const string num)
 		return true;//删除成功
 	}
 	else//未找到考生
+	{
+		cerr << "查无此人！"<<endl;
 		return false;
+	}
+		
 }
 
 bool Database::fix(const string num, const string name, const string sex, const string age, const string job)
@@ -168,7 +172,10 @@ bool Database::fix(const string num, const string name, const string sex, const 
 		return true;
 	}
 	else//未找到考生
+	{
+		cerr << "查无此人！" << endl;
 		return false;
+	}
 }
 
 void Database::showAll()
