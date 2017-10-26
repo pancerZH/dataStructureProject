@@ -85,7 +85,9 @@ bool insert(Database* database)
 	cout << "请输入你要插入的考生的位置：";
 	int pos;
 	cin >> pos;
-
+	if (pos < 1)//若插入位置小于1（越界），则置pos为1
+		pos = 1;
+	
 	string num;
 	string name;
 	string sex;
