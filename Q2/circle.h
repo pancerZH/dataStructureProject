@@ -123,13 +123,16 @@ void Circle::showAll()
 	Passenger* temp = head;
 	cout << endl;
 	cout << "最后剩下：\t" << leftNum << "人" << endl;
-	cout << "剩余的生者位置为：\t" << temp->getID();
-	temp = temp->next;
-
-	while (temp != head)
+	if (leftNum != 0)
 	{
-		cout << '\t' << temp->getID();
+		cout << "剩余的生者位置为：\t" << temp->getID();
 		temp = temp->next;
+
+		while (temp != head)
+		{
+			cout << '\t' << temp->getID();
+			temp = temp->next;
+		}
+		cout << endl;
 	}
-	cout << endl;
 }
