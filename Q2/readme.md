@@ -252,7 +252,9 @@
   1. 输入小于等于0的开始位置，会默认为从第一名乘客开始计算  
   2. 输入大于总人数的开始位置，会进行重复环绕匹配，即开始位置=开始位置%总人数  
 
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/startNumError.PNG)
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/startNumError.PNG)  
+
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/startNumError2.PNG)
   
 - #### 输入错误的死亡数字
 
