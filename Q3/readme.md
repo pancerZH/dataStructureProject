@@ -233,8 +233,12 @@
   
   ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q3/image/run2.PNG)
   
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q3/image/run2Sign.jpg)
+  
 - #### 没有通路情况下的测试
 
   在这种情况下，骑士不应当陷入死循环，而且打印时也要求一些变化。  
   
   ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q3/image/run3.PNG)
+  
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q3/image/run3Sign.jpg)
