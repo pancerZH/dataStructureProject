@@ -8,10 +8,21 @@ int main()
 	cin >> totalNum;
 	cout << "请输入游戏开始的位置S：";
 	cin >> startNum;
+	startNum %= totalNum;
 	cout << "请输入死亡数字M：";
 	cin >> deathNum;
+	while (deathNum < 1 || deathNum > totalNum)
+	{
+		cout << "请输入大于0小于等于总人数N的死亡数字M！" << endl;
+		cin >> deathNum;
+	}
 	cout << "请输入剩余的生者人数K：";
 	cin >> leftNum;
+	while (leftNum < 0 || leftNum > totalNum)
+	{
+		cout << "请输入大于等于0小于等于总人数N的剩余生者人数K！" << endl;
+		cin >> leftNum;
+	}
 
 	auto circle = new Circle(totalNum, startNum, deathNum, leftNum);
 	if (circle == NULL)
