@@ -97,10 +97,6 @@
   |-------|----|----|----|
   |positionX|public|int|记录点的横坐标|
   |positionY|public|int|记录点的纵坐标|
-  |up|public|bool|记录点的上方是否已经探测过|
-  |down|public|bool|记录点的下方是否已经探测过|
-  |left|public|bool|记录点的左方是否已经探测过|
-  |right|public|bool|记录点的右方是否已经探测过|
   |next|public|Point*|指向下一个节点|
   |front|public|Point*|指向上一个节点|
 
@@ -173,15 +169,6 @@
   ```c++
   Point* Point::linkNext(int x, int y)
   {
-    if (x > this->positionX)//位于自身下面
-      this->down = false;
-    if (x < this->positionX)//位于自身上面
-      this->up = false;
-    if (y > this->positionY)//位于自身右面
-      this->right = false;
-    if (y < this->positionY)//位于自身左面
-      this->left = false;
-
     if (this->next != NULL)//删掉原有的节点
       delete(this->next);
 
@@ -192,11 +179,11 @@
     return temp;
   }
   ```
-  在这里我们首先检查要链接的点位于栈顶元素的哪个方向，因为这对我们标记测试过的方向（up,down,left,right）很重要。在这之后做一个测试，以决定是否有一个被抛出栈的元素，如果有，就删掉它。最后返回指向那个被压入栈的新元素的指针，也即栈顶指针。  
+  在这里我们做一个测试，以决定是否有一个被抛出栈的元素，如果有，就删掉它。然后建立新的元素并且压入栈，最后返回指向那个被压入栈的新元素的指针，也即栈顶指针。  
   
   - 寻路
   
-  整个寻路的过程都是回溯的过程，我们要借助栈中元素的方向标记（up,down,left,right）和迷宫地图数组上的标记（如标记为2的测试过的点就不应该再作为新的测试点，因为它们已经被证明了是不会到达终点的）。  
+  整个寻路的过程都是回溯的过程，我们要借助迷宫地图数组上的标记（如标记为2的测试过的点就不应该再作为新的测试点，因为它们已经被证明了是不会到达终点的）来完成它。  
   
   ```c++
   bool Knight::findWay(Field* field)
@@ -205,13 +192,13 @@
     while (temp->positionX != endX || temp->positionY != endY)
     {
       field->field[temp->positionX][temp->positionY] = TESTED;//防止走回头路，使走过的路不可再走
-      if (temp->up && field->canAccess(temp->positionX - 1, temp->positionY))//向上走
+      if (field->canAccess(temp->positionX - 1, temp->positionY))//向上走
         temp = temp->linkNext(temp->positionX - 1, temp->positionY);
-      else if (temp->left && field->canAccess(temp->positionX, temp->positionY - 1))//向左走
+      else if (field->canAccess(temp->positionX, temp->positionY - 1))//向左走
         temp = temp->linkNext(temp->positionX, temp->positionY - 1);
-      else if (temp->right && field->canAccess(temp->positionX, temp->positionY + 1))//向右走
+      else if (field->canAccess(temp->positionX, temp->positionY + 1))//向右走
         temp = temp->linkNext(temp->positionX, temp->positionY + 1);
-      else if (temp->down && field->canAccess(temp->positionX + 1, temp->positionY))//向下走
+      else if (field->canAccess(temp->positionX + 1, temp->positionY))//向下走
         temp = temp->linkNext(temp->positionX + 1, temp->positionY);
       else//无路可走，即没有通路
       {
@@ -233,5 +220,5 @@
   我知道这看起来似乎很复杂，但是它是很容易分析和理解的——它只是看上去很长而已。  
   首先我们要明白，整个函数只被执行一次（因为它是非递归的），所以我们是从栈为空的前提下进行链接的，所以我们从栈的底部（head）开始。  
   接着的while循环直到找到通向终点的通路才会正常终止，但是它也必须要具备一旦发现没有通路就终止循环的能力。  
-  循环中的一大片判断是为了逐个方向地验证邻近的点是否为通路。如果是的话，就将这个点压入栈，并更新指针，进行新的循环。  
+  循环中的一大片判断是为了逐个方向地验证邻近的点是否为通路（曾被测试过的点不能算作通路）。如果是的话，就将这个点压入栈，并更新指针，进行新的循环。  
   最后，当我们无路可走时，就说明栈顶元素代表的节点不在最终通路上，我们要将它抛出，这样就可以回溯到它的上一个节点处了。但是如果栈已经空了，说明我们已经回到起点了，并且起点也没有其他的可以尝试的方向了，也就是说，这个迷宫是没有通路的。这个时候我们就可以跳出，并且将一些标记迷宫是否有通路的布尔值标为false。  
