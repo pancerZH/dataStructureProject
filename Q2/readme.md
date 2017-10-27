@@ -264,6 +264,6 @@
   
 - #### 输入错误的生还者数字
 
-  属于小于等于0、大于总人数的生还者数字，会被要求重新输入  
+  输入小于等于0、大于总人数的生还者数字，会被要求重新输入  
 
   ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/leftNumError.PNG)
