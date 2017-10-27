@@ -14,6 +14,7 @@ int main()
 	cout << "请输入游戏开始的位置S：";
 	cin >> startNum;
 	startNum %= totalNum;
+	startNum = (startNum == 0 ? totalNum : startNum);//换算出真正的开始位置
 	cout << "请输入死亡数字M：";
 	cin >> deathNum;
 	while (deathNum < 1 || deathNum > totalNum)
