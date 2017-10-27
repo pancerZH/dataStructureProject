@@ -44,7 +44,7 @@ Field::Field()
 		for (int j = 0; j < column; ++j)
 			field[i][j] = BLOCK;
 
-	field[1][1] = field[2][1] = field[3][1] = field[3][2] = field[3][3]
+	field[1][1] = field[2][1] = field[3][1] = field[3][2] = field[3][3] = field[2][5]
 		= field[4][1] = field[5][1] = field[1][3] = field[2][3] = field[5][3] = field[1][4]
 		= field[1][5] = field[4][3] = field[4][4] = field[3][5] = field[4][5] = field[5][5] = SPACE;
 }
@@ -169,19 +169,24 @@ bool Knight::findWay(Field* field)
 	while (temp->positionX != endX || temp->positionY != endY)
 	{
 		field->field[temp->positionX][temp->positionY] = TESTED;//防止走回头路，使走过的路不可再走
-		if (temp->right && field->canAccess(temp->positionX, temp->positionY + 1))//向右走
+		if (temp->up && field->canAccess(temp->positionX - 1, temp->positionY))//向上走
+			temp = temp->linkNext(temp->positionX - 1, temp->positionY);
+		else if (temp->left && field->canAccess(temp->positionX, temp->positionY - 1))//向左走
+			temp = temp->linkNext(temp->positionX, temp->positionY - 1);
+		else if (temp->right && field->canAccess(temp->positionX, temp->positionY + 1))//向右走
 			temp = temp->linkNext(temp->positionX, temp->positionY + 1);
 		else if (temp->down && field->canAccess(temp->positionX + 1, temp->positionY))//向下走
 			temp = temp->linkNext(temp->positionX + 1, temp->positionY);
-		else if (temp->left && field->canAccess(temp->positionX, temp->positionY - 1))//向左走
-			temp = temp->linkNext(temp->positionX, temp->positionY - 1);
-		else if (temp->up && field->canAccess(temp->positionX - 1, temp->positionY))//向上走
-			temp = temp->linkNext(temp->positionX - 1, temp->positionY);
 		else//无路可走，即没有通路
 		{
-			field->isAccess = false;
-			canReachEnd = false;
-			return false;
+			temp = temp->front;//回到链表中上一个节点处
+
+			if (temp == NULL)//链表中已无可选择的路径，即无路可走
+			{
+				field->isAccess = false;//宣告迷宫无通路
+				canReachEnd = false;//宣告骑士无法走出迷宫
+				return false;
+			}
 		}
 
 		if (temp == NULL)
