@@ -114,7 +114,127 @@
   |~Circle|无|析构函数，释放掉链表占用的空间|
   |killUntilLeftNum|bool|调用杀人函数，直到剩余人数为leftNum|
   |killSomeone|Passenger*|杀掉某个位置上的乘客，并且返回指向下一个乘客的指针|
-  |showAll|void|展示生者人数、位置和死掉的乘客及位置|
+  |showAll|void|展示生者人数、位置|
+
+### 4. 核心代码解释    
+
+- #### 建立生死环
+
+  建立生死环包括两个步骤：  
+  1. 建立循环链表；  
+  2. 找到起始乘客的位置  
   
+  ```c++
+  Circle::Circle(int num, int start, int deathNum, int leftNum)
+	{
+		head = new Passenger(1);//建立生死环
+		...
+		Passenger* temp = head;
+		int count = 2;
+		while (count <= num)
+		{
+			temp->linkNext(new Passenger(count));
+			if(temp->next != NULL)
+				temp = temp->next;
+			++count;
+		}
+		temp->linkNext(head);//构成双向循环链表
+
+		while (start > 1)//找到起始旅客位置
+		{
+			head = head->next;
+			--start;
+		}
+		...
+	}
+  ```
   
+  其中，调用的linkNext函数为  
   
+  ```c++
+  bool Passenger::linkNext(Passenger* nextPassenger)
+  {
+    if (nextPassenger != NULL)
+    {
+      this->next = nextPassenger;
+      nextPassenger->front = this;
+      return true;
+    }
+    else
+    {
+      cerr << "内存空间不足！" << endl;
+      exit(1);
+    }
+  }
+  ```
+  可见，linkNext函数除了链接下一个节点外，还对Circle函数中对空间的申请进行了检查，防止出现内存不足的情况。  
+  
+- #### 杀掉乘客  
+  
+  杀掉乘客时，采用的方法是由当前指针所指乘客为起点，找到他之后的第deathNum个人，并将他杀掉  
+
+  ```c++
+  bool Circle::killUntilLeftNum()
+  {
+    Passenger* temp = head;
+    int killNum = 0;
+    while (leftNum != totalNum-killNum)
+    {
+      int count = 1;
+      while (count != deathNum)//找到本次要被杀的人
+      {
+        temp = temp->next;
+        ++count;
+      }
+      ++killNum;
+      temp = killSomeone(temp,killNum);//杀掉此人
+    }
+    return true;
+  }
+  ```
+  
+  其中，杀掉某个特定乘客的函数killSomeone实现为
+  
+  ```c++
+  Passenger* Circle::killSomeone(Passenger* passenger, int killNum)
+  {
+    Passenger* temp = passenger->next;
+    passenger->front->next = temp;
+    temp->front = passenger->front;
+
+    if (passenger == head)//防止删除节点时丢失头结点
+      head = temp;
+
+    cout << "第" << killNum << "个死者位置是：\t" << passenger->getID() << endl;
+    delete(passenger);
+    passenger = NULL;
+
+    return temp;//返回被杀的人下一个位置上的人
+  }
+  ```
+  注意，killSomeone函数负责将被杀死的乘客的节点丛链表上删除，并释放内存。除此之外还要打印杀掉的乘客信息，并且返回指向下一个乘客的指针。
+  
+- #### 展示生还乘客  
+  
+  根据循环链表的特性，由头指针所指向的节点开始，遍历链表，打印信息，直到回到头指针指向的节点  
+
+  ```c++
+  void Circle::showAll()
+  {
+    Passenger* temp = head;
+    cout << endl;
+    cout << "最后剩下：\t" << leftNum << "人" << endl;
+    if (leftNum != 0)
+    {
+      cout << "剩余的生者位置为：\t" << temp->getID();
+      temp = temp->next;
+
+      while (temp != head)//检查是否回到起点
+      {
+        cout << '\t' << temp->getID();
+        temp = temp->next;
+      }
+      cout << endl;
+    }
+  }
+  ```
