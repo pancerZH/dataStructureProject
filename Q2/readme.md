@@ -238,3 +238,30 @@
     }
   }
   ```
+  
+### 5. 容错测试
+  
+- #### 输入错误的总人数  
+
+  输入小于等于0的总人数时，会被要求重新输入  
+
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/totalNumError.PNG)
+  
+- #### 输入错误的开始位置  
+
+  1. 输入小于等于0的开始位置，会默认为从第一名乘客开始计算  
+  2. 输入大于总人数的开始位置，会进行重复环绕匹配，即开始位置=开始位置%总人数  
+
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/startNumError.PNG)
+  
+- #### 输入错误的死亡数字
+
+  输入小于等于0、大于总人数的死亡数字，会被要求重新输入  
+
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/deathNumError.PNG)
+  
+- #### 输入错误的生还者数字
+
+  属于小于等于0、大于总人数的生还者数字，会被要求重新输入  
+
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/leftNumError.PNG)
