@@ -92,28 +92,17 @@ class Point {
 public:
 	Point(int x, int y) :positionX(x), positionY(y) 
 	{
-		up = down = left = right = true;
 		next = front = NULL;
 	}
 	Point* linkNext(int x, int y);
 	int positionX;
 	int positionY;
-	bool up, down, left, right;
 	Point* next;
 	Point* front;
 };
 
 Point* Point::linkNext(int x, int y)
 {
-	if (x > this->positionX)//位于自身下面
-		this->down = false;
-	if (x < this->positionX)//位于自身上面
-		this->up = false;
-	if (y > this->positionY)//位于自身右面
-		this->right = false;
-	if (y < this->positionY)//位于自身左面
-		this->left = false;
-
 	if (this->next != NULL)//删掉原有的节点
 		delete(this->next);
 
@@ -169,13 +158,13 @@ bool Knight::findWay(Field* field)
 	while (temp->positionX != endX || temp->positionY != endY)
 	{
 		field->field[temp->positionX][temp->positionY] = TESTED;//防止走回头路，使走过的路不可再走
-		if (temp->up && field->canAccess(temp->positionX - 1, temp->positionY))//向上走
+		if (field->canAccess(temp->positionX - 1, temp->positionY))//向上走
 			temp = temp->linkNext(temp->positionX - 1, temp->positionY);
-		else if (temp->left && field->canAccess(temp->positionX, temp->positionY - 1))//向左走
+		else if (field->canAccess(temp->positionX, temp->positionY - 1))//向左走
 			temp = temp->linkNext(temp->positionX, temp->positionY - 1);
-		else if (temp->right && field->canAccess(temp->positionX, temp->positionY + 1))//向右走
+		else if (field->canAccess(temp->positionX, temp->positionY + 1))//向右走
 			temp = temp->linkNext(temp->positionX, temp->positionY + 1);
-		else if (temp->down && field->canAccess(temp->positionX + 1, temp->positionY))//向下走
+		else if (field->canAccess(temp->positionX + 1, temp->positionY))//向下走
 			temp = temp->linkNext(temp->positionX + 1, temp->positionY);
 		else//无路可走，即没有通路
 		{
