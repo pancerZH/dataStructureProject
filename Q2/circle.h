@@ -128,7 +128,7 @@ void Circle::showAll()
 		cout << "剩余的生者位置为：\t" << temp->getID();
 		temp = temp->next;
 
-		while (temp != head)
+		while (temp != head)//检查是否回到起点
 		{
 			cout << '\t' << temp->getID();
 			temp = temp->next;

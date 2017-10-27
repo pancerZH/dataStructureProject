@@ -6,6 +6,11 @@ int main()
 	cout << "现有N人围成一圈，从第S个人开始依次报数，报M的人出局，再由下一人开始报数，如此循环，直至剩下K个人为止。" << endl;
 	cout << endl << "请输入生死游戏的总人数N：";
 	cin >> totalNum;
+	while (totalNum < 1)
+	{
+		cout << "请输入大于0的总人数！" << endl;
+		cin >> totalNum;
+	}
 	cout << "请输入游戏开始的位置S：";
 	cin >> startNum;
 	startNum %= totalNum;
