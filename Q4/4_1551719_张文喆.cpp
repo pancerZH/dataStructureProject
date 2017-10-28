@@ -9,6 +9,7 @@ int main()
 	while (size <= 0)
 	{
 		cout << "请输入大于0的皇后个数！" << endl;
+		cin.clear();
 		cin >> size;
 	}
 	cout << endl << "皇后摆法：" << endl << endl;
