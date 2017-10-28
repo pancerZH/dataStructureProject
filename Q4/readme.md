@@ -86,5 +86,84 @@
   |-------|----------|---|
   |Queen|无|构造函数|
   |fillChess|void|递归函数，进行摆放皇后试探|
+  
+### 4. 核心代码解释  
+
+  - 展示棋盘
   
+  ```c++
+  void Chess::showChess()
+	{
+		for (int i = 0;i < size;++i)
+		{
+			for (int j = 0;j < size;++j)
+				cout << ((field[i][j]==1)?'X':'O') << ' ';
+			cout << endl;
+		}
+		cout << endl;
+	}
+  ```
+  展示棋盘的逻辑非常简单：逐个打印棋盘数组中的数字，如果数字是1，就打印'X'，它代表这个位置上有一个皇后；如果是0，就打印'O'，它代表这是一个空着的格子。  
   
+  - 检查特定格子  
+  
+  我们在决定一个格子是否可以摆放皇后时，要检查四个方向：横、竖、斜（对应主对角线）和反斜（对应副对角线）。好在我们在进行递归时是按照行进行的，所以我们在进行正式的判断前，就可以断定在同一行是是不会有其他皇后的。于是我们可以用下面的代码解决检查的任务：
+  ```c++
+  bool Chess::checkPoint(const int x, const int y)
+  {
+    for (int i = 0;i < size;++i)//检查同一列上是否有皇后
+      if (field[i][y] == 1)
+        return false;
+
+    for (int k = -(size - 1);k < size;++k)//检查主对角线上是否有皇后
+    {
+      if (x + k < 0 || y + k < 0)//还未抵达左上边界
+        continue;
+      if (x + k > size - 1 || y + k > size - 1)//已越过右下边界
+        break;
+      if (field[x + k][y + k] == 1)
+        return false;
+    }
+
+    for (int k = -(size - 1);k < size;++k)//检查副对角线上是否有皇后
+    {
+      if (x + k<0 || y - k>size - 1)//还未抵达右上边界
+        continue;
+      if (x + k > size - 1 || y - k < 0)//已越过左下边界
+        break;
+      if (field[x + k][y - k] == 1)
+        return false;
+    }
+
+    return true;
+  }
+  ```  
+  可以看到我们检查了三个必不可少的方向。并且值得一提的是，在检查的时候千万小心越界的情况，所以必须在每组检查开头额外检查是不是越过了棋盘数组的边界。  
+  
+  - 摆放皇后
+  
+  checkPoint函数会告诉我们正在接受检查的点在当前情况下是否可以摆放皇后，所以我们可以这样设计递归函数：
+  ```c++
+  void Queen::fillChess(const int row)
+  {
+    if (row == chess->size)//皇后已经全部放置完毕
+    {
+      chess->showChess();
+      ++(chess->totalNum);
+      return;
+    }
+
+    for (int j = 0;j < chess->size;++j)
+    {
+      if (chess->checkPoint(row, j))
+        chess->field[row][j] = 1;//将此格子放上皇后
+      else//若此格子无法防止皇后，则考察相邻的下一个格子
+        continue;
+
+      fillChess(row + 1);//此行皇后放置好后，处理下一行
+      chess->field[row][j] = 0;//此格子放置皇后的模拟已结束，回归无子状态，开始考察下一个格子
+    }
+  }
+  ```
+  这里，递归函数的出口被设置为“所有行都已经摆放好了皇后”。在这种情况下，我们打印棋盘并返回。当然，这不是结束所有的递归，而是回到了上一层递归，并继续寻找其它的解决方案，直到再也没有为止。  
+  每当我们发现找到一组摆放方案时，我们都有打印棋盘，并且为总解法+1，这样我们在最后就可以很方便地得到最终的摆放方法数量了。  
