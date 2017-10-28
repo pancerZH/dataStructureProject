@@ -8,7 +8,7 @@ int main()
 	cin >> size;
 	while (size <= 0)
 	{
-		cout << "请输入大于0的皇后个数！" << endl;
+		cout << "请输入大于0小于INT_MAX的皇后个数！" << endl;
 		cin.clear();
 		cin >> size;
 	}
