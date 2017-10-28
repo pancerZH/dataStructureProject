@@ -21,6 +21,7 @@ int main()
 		exit(1);
 	}
 	queen->fillChess(0);
+	cout << "共有" << chess->totalNum << "种解法！" << endl;
 
 	getchar();
 	getchar();

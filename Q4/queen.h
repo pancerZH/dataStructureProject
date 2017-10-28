@@ -8,12 +8,13 @@ public:
 	~Chess();
 	void showChess();
 	bool checkPoint(const int x, const int y);
-	int size;
+	int size;//棋盘尺寸
 	int **field;
+	int totalNum;//皇后摆法
 };
 
 Chess::Chess(const int size)
-	:size(size)
+	:size(size), totalNum(0)
 {
 	field = new int *[size];
 	if (field == NULL)
@@ -100,6 +101,7 @@ void Queen::fillChess(const int row)
 	if (row == chess->size)//皇后已经全部放置完毕
 	{
 		chess->showChess();
+		++(chess->totalNum);
 		return;
 	}
 
