@@ -174,4 +174,14 @@ N皇后问题的输入比较简单，只要求输入N，那么在输入上的容
 
 - #### 错误的输入
 
-  在这种情况下，程序会要求输入正确范围内的数字
+  在这种情况下，程序会要求输入正确范围内的数字。  
+  
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q4/image/error.PNG)
+  
+  可见，不论对于上溢还是下溢，都具有很好的容错能力。
+  
+- #### 无结果的情形
+
+  这种情况不算是错误，但是由于其没有解，所以程序有可能在逻辑上出现问题（比如打印棋盘和总解法）。  
+  
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q4/image/error0.PNG)
