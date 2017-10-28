@@ -306,7 +306,7 @@ bool Paragraph::countWords()
 	if (outFile.is_open() == false)
 	{
 		cerr << "文件不存在或打开失败！" << endl;
-		exit(2);
+		return false;
 	}
 
 	if (tableSize != 0)//清除旧表
@@ -356,7 +356,7 @@ bool Paragraph::wordInLine()
 	if (outFile.is_open() == false)
 	{
 		cerr << "文件不存在或打开失败！" << endl;
-		exit(2);
+		return false;
 	}
 
 	string word;
