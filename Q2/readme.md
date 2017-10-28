@@ -264,3 +264,5 @@
   输入小于等于0、大于总人数的生还者数字，会被要求重新输入  
 
   ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/leftNumError.PNG)
+
+综上，程序对于不合理的输入、上溢和下溢都有很好的容错能力。
