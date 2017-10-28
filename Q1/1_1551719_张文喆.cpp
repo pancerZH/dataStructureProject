@@ -32,6 +32,7 @@ int main()
 		string job;
 		cout << "请依次输入考生的考号，姓名，性别，年龄以及报考类别！" << endl;
 		cin >> num >> name >> sex >> age >> job;
+		cin.clear();
 
 		auto temp = new Student(num, name, sex, age, job);
 		if (temp == NULL)
@@ -85,6 +86,7 @@ bool insert(Database* database)
 	cout << "请输入你要插入的考生的位置：";
 	int pos;
 	cin >> pos;
+	cin.clear();
 	if (pos < 1)//若插入位置小于1（越界），则置pos为1
 		pos = 1;
 	
@@ -130,13 +132,14 @@ bool find(Database* database)
 
 bool fix(Database* database)
 {
-	cout << "请依此输入要修改的考生的考号，姓名，性别，年龄以及报考类别！" << endl;
+	cout << "请依次输入要修改的考生的考号，姓名，性别，年龄以及报考类别！" << endl;
 	string num;
 	string name;
 	string sex;
 	string age;
 	string job;
 	cin >> num >> name >> sex >> age >> job;
+	cin.clear();
 
 	return database->fix(num, name, sex, age, job);
 }
