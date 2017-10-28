@@ -8,25 +8,35 @@ int main()
 	cin >> totalNum;
 	while (totalNum < 1)
 	{
-		cout << "请输入大于0的总人数！" << endl;
+		cout << "请输入大于0小于INT_MAX的总人数！" << endl;
+		cin.clear();
 		cin >> totalNum;
 	}
+
 	cout << "请输入游戏开始的位置S：";
 	cin >> startNum;
-	startNum %= totalNum;
-	startNum = (startNum == 0 ? totalNum : startNum);//换算出真正的开始位置
+	while (startNum < 1 || startNum > totalNum)
+	{
+		cout << "请输入大于0小于等于总人数的开始位置！" << endl;
+		cin.clear();
+		cin >> startNum;
+	}
+
 	cout << "请输入死亡数字M：";
 	cin >> deathNum;
 	while (deathNum < 1 || deathNum > totalNum)
 	{
 		cout << "请输入大于0小于等于总人数N的死亡数字M！" << endl;
+		cin.clear();
 		cin >> deathNum;
 	}
+
 	cout << "请输入剩余的生者人数K：";
 	cin >> leftNum;
 	while (leftNum < 0 || leftNum > totalNum)
 	{
 		cout << "请输入大于等于0小于等于总人数N的剩余生者人数K！" << endl;
+		cin.clear();
 		cin >> leftNum;
 	}
 
