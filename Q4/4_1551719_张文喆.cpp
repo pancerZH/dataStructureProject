@@ -6,6 +6,11 @@ int main()
 	cout << "现有NXN的棋盘，放入N个皇后，要求所有皇后不在同一行、列和斜线上！" << endl;
 	cout << endl << "请输入皇后的个数：";
 	cin >> size;
+	while (size <= 0)
+	{
+		cout << "请输入大于0的皇后个数！" << endl;
+		cin >> size;
+	}
 	cout << endl << "皇后摆法：" << endl << endl;
 
 	auto chess = new Chess(size);
