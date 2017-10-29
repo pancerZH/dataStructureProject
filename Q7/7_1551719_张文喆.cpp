@@ -13,6 +13,12 @@ int main()
 
 	int count = size, length;
 	auto queue = new int[size + 1];
+	if (queue == NULL)
+	{
+		cerr << "ÄÚ´æ¿Õ¼ä²»×ã£¡" << endl;
+		exit(1);
+	}
+
 	while (count--)
 	{
 		cin >> length;
