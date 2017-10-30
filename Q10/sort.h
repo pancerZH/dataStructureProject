@@ -15,6 +15,8 @@ public:
 	void selection();//选择排序
 	void insertion();//直接插入排序
 	void shell();//希尔排序
+	void quick();//快速排序
+	void quickSort(const int, const int, int&);//快速排序的子函数，用于递归
 private:
 	int size;
 	int* numGroup;
@@ -113,7 +115,6 @@ void Sort::selection()
 			{
 				min = copyGroup[j];
 				position = j;
-				++total;
 			}
 		}
 
@@ -185,4 +186,45 @@ void Sort::shell()
 	cout << "希尔排序所用时间：\t" << float(finish - start) / CLOCKS_PER_SEC << endl;
 	cout << "希尔排序交换次数：\t" << total << endl;
 	check();
+}
+
+void Sort::quick()
+{
+	copyNumGroup();//将数据复制到操作数组中
+	int total = 0;
+	clock_t start, finish;
+
+	start = clock();
+	quickSort(0, size - 1, total);
+	finish = clock();
+
+	cout << "快速排序所用时间：\t" << float(finish - start) / CLOCKS_PER_SEC << endl;
+	cout << "快速排序交换次数：\t" << total << endl;
+	check();
+}
+
+void Sort::quickSort(const int left, const int right, int& total)
+{
+	int i = left, j = right;//分别指向数组的头尾
+	if (left > right)
+		return;
+
+	int key = copyGroup[left];//找到基准元
+	while (i != j)
+	{
+		while (j > i&&key <= copyGroup[j])
+			--j;//找到右侧第一个小于基准元的数
+		while (i < j&&key >= copyGroup[i])
+			++i;//找到左侧第一个大于基准元的数
+		if (i < j)//如果两数未重叠，则交换它们的值
+		{
+			swap(copyGroup[i], copyGroup[j]);
+			++total;
+		}
+	}
+	swap(copyGroup[i], copyGroup[left]);//基准元归位
+	++total;
+
+	quickSort(left, i - 1, total);//继续处理左半部分
+	quickSort(i + 1, right, total);//继续处理右半部分
 }

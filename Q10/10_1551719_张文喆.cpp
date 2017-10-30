@@ -8,6 +8,7 @@ int main()
 	cout << "**\t\t2 --- 选择排序\t\t**" << endl;
 	cout << "**\t\t3 --- 直接插入排序\t**" << endl;
 	cout << "**\t\t4 --- 希尔排序\t\t**" << endl;
+	cout << "**\t\t5 --- 快速排序\t\t**" << endl;
 	cout << "==========================================" << endl;
 
 	cout << endl << "请输入要产生的随机数的个数：";
@@ -45,6 +46,9 @@ int main()
 			break;
 		case 4:
 			sort->shell();
+			break;
+		case 5:
+			sort->quick();
 			break;
 		default:
 			return 0;
