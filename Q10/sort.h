@@ -300,8 +300,8 @@ void Sort::merge()
 	tempArr = NULL;
 	finish = clock();
 
-	cout << "堆排序所用时间：\t" << float(finish - start) / CLOCKS_PER_SEC << endl;
-	cout << "堆排序比较次数：\t" << total << endl;
+	cout << "归并排序所用时间：\t" << float(finish - start) / CLOCKS_PER_SEC << endl;
+	cout << "归并排序比较次数：\t" << total << endl;
 	check();
 }
 
