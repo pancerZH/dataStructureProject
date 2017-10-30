@@ -26,7 +26,7 @@ private:
 	int size;
 	int* numGroup;
 	int* copyGroup;
-	int total;
+	int total;//排序时的交换计数
 };
 
 Sort::Sort(const int size)
@@ -280,7 +280,7 @@ void Sort::percDown(const int downIndex, const int endIndex)
 void Sort::merge()
 {
 	copyNumGroup();//将数据复制到操作数组中
-	int total = 0;//比较计数归0
+	this->total = 0;//比较计数归0
 	clock_t start, finish;
 
 	start = clock();
