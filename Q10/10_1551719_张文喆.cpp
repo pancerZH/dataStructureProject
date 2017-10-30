@@ -12,6 +12,8 @@ int main()
 	cout << "**\t\t6 --- 堆排序\t\t**" << endl;
 	cout << "**\t\t7 --- 归并排序\t\t**" << endl;
 	cout << "**\t\t8 --- 桶排序\t\t**" << endl;
+	cout << "**\t\t9 --- 基数排序\t\t**" << endl;
+	cout << "**\t\t0 --- 退出程序\t\t**" << endl;
 	cout << "==========================================" << endl;
 
 	cout << endl << "请输入要产生的随机数的个数：";
@@ -61,6 +63,9 @@ int main()
 			break;
 		case 8:
 			sort->bucket();
+			break;
+		case 9:
+			sort->radix();
 			break;
 		default:
 			return 0;

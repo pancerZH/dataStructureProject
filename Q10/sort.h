@@ -23,6 +23,8 @@ public:
 	void divideMerge(int*, const int, const int);//归并排序的子函数，用于划分数组
 	void mergeTwoPart(int*, int, int, int);//归并排序的子函数，用于合并两个已排序的表
 	void bucket();//桶排序
+	void radix();//基数排序
+	int maxBit();//基数排序的辅助函数，获取数据的最高位数
 private:
 	int size;
 	int* numGroup;
@@ -376,4 +378,67 @@ void Sort::bucket()
 	cout << "桶排序所用时间：\t" << float(finish - start) / CLOCKS_PER_SEC << endl;
 	cout << "桶排序比较次数：\t" << total << endl;
 	check();
+}
+
+void Sort::radix()//LSD方法实现
+{
+	copyNumGroup();//将数据复制到操作数组中
+	this->total = 0;//比较计数归0
+	clock_t start, finish;
+
+	start = clock();
+	int max = maxBit();
+	int* bucket = new int[size];//桶（将来的所有桶都在里面分配空间）
+	/*计数器，第一阶段计算某位为index的数据数量，第二阶段标记每个桶的结束位置*/
+	int* count = new int[10];
+	if (bucket == NULL || count == NULL)
+	{
+		cerr << "内存空间不足！" << endl;
+		exit(1);
+	}
+
+	for (int i = 0, radixNum = 1;i < max;++i)//按位数进行max次排序，radixNum为基数
+	{
+		for (int j = 0;j < 10;++j)//每次排序前初始化计数器
+			count[j] = 0;
+		for (int j = 0;j < size;++j)
+		{
+			/*拿到数据第i位上的数字作为索引*/
+			int index = (copyGroup[j] / radixNum) % 10;
+			++count[index];//数据量加1
+		}
+		for (int j = 1;j < 10;++j)//为每个桶分配空间
+			count[j] = count[j - 1] + count[j];//桶的结束位置
+
+		for (int j = size - 1;j >= 0;--j)//将数据放入对应的桶中
+		{
+			int index = (copyGroup[j] / radixNum) % 10;
+			/*count[index]-1是数据在桶中的位置*/
+			bucket[count[index] - 1] = copyGroup[j];
+			--count[index];//对应数据量减1
+		}
+		for (int j = 0;j < size;++j)
+			copyGroup[j] = bucket[j];//将桶中数据拷贝到操作数组中
+		radixNum *= 10;//基数增加
+	}
+
+	delete[] bucket;
+	delete[] count;
+	count = bucket = NULL;
+	finish = clock();
+
+	cout << "基数排序所用时间：\t" << float(finish - start) / CLOCKS_PER_SEC << endl;
+	cout << "基数排序比较次数：\t" << total << endl;
+	check();
+}
+
+int Sort::maxBit()
+{
+	int max = 1, ruler = 10;
+	while (size - 1 >= ruler)
+	{
+		++max;
+		ruler *= 10;
+	}
+	return max;
 }
