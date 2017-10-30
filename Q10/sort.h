@@ -410,7 +410,7 @@ void Sort::radix()//LSD方法实现
 		for (int j = 1;j < 10;++j)//为每个桶分配空间
 			count[j] = count[j - 1] + count[j];//桶的结束位置
 
-		for (int j = size - 1;j >= 0;--j)//将数据放入对应的桶中
+		for (int j = size - 1;j >= 0;--j)//将数据放入对应的桶中，保持稳定性
 		{
 			int index = (copyGroup[j] / radixNum) % 10;
 			/*count[index]-1是数据在桶中的位置*/
