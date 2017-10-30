@@ -17,6 +17,8 @@ public:
 	void shell();//希尔排序
 	void quick();//快速排序
 	void quickSort(const int, const int, int&);//快速排序的子函数，用于递归
+	void heap();//堆排序
+	void percDown(const int, const int, int&);//堆排序的子函数，用于空穴下滤
 private:
 	int size;
 	int* numGroup;
@@ -227,4 +229,46 @@ void Sort::quickSort(const int left, const int right, int& total)
 
 	quickSort(left, i - 1, total);//继续处理左半部分
 	quickSort(i + 1, right, total);//继续处理右半部分
+}
+
+void Sort::heap()
+{
+	copyNumGroup();//将数据复制到操作数组中
+	int total = 0;
+	clock_t start, finish;
+
+	start = clock();
+	for (int i = size / 2;i >= 0;--i)//建堆,最大的元素位于根部
+		percDown(i, size, total);
+	for (int i = size - 1;i > 0;--i)
+	{
+		/*将堆中最大元素排在排序区头部，排序区整体上为由小到大*/
+		swap(copyGroup[i], copyGroup[0]);
+		++total;
+		percDown(0, i, total);
+	}
+	finish = clock();
+
+	cout << "堆排序所用时间：\t" << float(finish - start) / CLOCKS_PER_SEC << endl;
+	cout << "堆排序交换次数：\t" << total << endl;
+	check();
+}
+
+void Sort::percDown(const int downIndex, const int endIndex, int& total)
+{
+	int childIndex;//它将指向两个儿子中较大的那一个
+	for (int i = downIndex;2 * i + 1 < endIndex;i = childIndex)
+	{
+		childIndex = 2 * i + 1;//现在指示的是左儿子的坐标
+		/*存在的前提下，若右儿子大于左儿子，则将childIndex改为左儿子坐标*/
+		if (childIndex != endIndex - 1 && copyGroup[childIndex] < copyGroup[childIndex + 1])
+			++childIndex;
+		if (copyGroup[i] < copyGroup[childIndex])
+		{
+			swap(copyGroup[i], copyGroup[childIndex]);//元素下滤
+			++total;
+		}
+		else//下滤的元素找到了合适的位置；恢复了堆序性
+			break;
+	}
 }
