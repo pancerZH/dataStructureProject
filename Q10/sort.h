@@ -16,17 +16,21 @@ public:
 	void insertion();//直接插入排序
 	void shell();//希尔排序
 	void quick();//快速排序
-	void quickSort(const int, const int, int&);//快速排序的子函数，用于递归
+	void quickSort(const int, const int);//快速排序的子函数，用于递归
 	void heap();//堆排序
-	void percDown(const int, const int, int&);//堆排序的子函数，用于空穴下滤
+	void percDown(const int, const int);//堆排序的子函数，用于空穴下滤
+	void merge();//归并排序
+	void divideMerge(int*, const int, const int);//归并排序的子函数，用于划分数组
+	void mergeTwoPart(int*, int, int, int);//归并排序的子函数，用于合并两个已排序的表
 private:
 	int size;
 	int* numGroup;
 	int* copyGroup;
+	int total;
 };
 
 Sort::Sort(const int size)
-	:size(size)
+	:size(size), total(0)
 {
 	numGroup = new int[size];
 	copyGroup = new int[size];
@@ -77,7 +81,7 @@ void Sort::show()
 void Sort::bubble()
 {
 	copyNumGroup();//将数据复制到操作数组中
-	int total = 0;
+	this->total = 0;//交换计数归0
 	clock_t start, finish;
 	
 	start = clock();
@@ -103,7 +107,7 @@ void Sort::bubble()
 void Sort::selection()
 {
 	copyNumGroup();//将数据复制到操作数组中
-	int total = 0;
+	this->total = 0;//交换计数归0
 	clock_t start, finish;
 
 	start = clock();
@@ -134,7 +138,7 @@ void Sort::selection()
 void Sort::insertion()
 {
 	copyNumGroup();//将数据复制到操作数组中
-	int total = 0;
+	this->total = 0;//交换计数归0
 	clock_t start, finish;
 
 	start = clock();
@@ -158,7 +162,7 @@ void Sort::insertion()
 void Sort::shell()
 {
 	copyNumGroup();//将数据复制到操作数组中
-	int total = 0;
+	this->total = 0;//交换计数归0
 	clock_t start, finish;
 
 	int k, product = 1;
@@ -193,11 +197,11 @@ void Sort::shell()
 void Sort::quick()
 {
 	copyNumGroup();//将数据复制到操作数组中
-	int total = 0;
+	this->total = 0;//交换计数归0
 	clock_t start, finish;
 
 	start = clock();
-	quickSort(0, size - 1, total);
+	quickSort(0, size - 1);
 	finish = clock();
 
 	cout << "快速排序所用时间：\t" << float(finish - start) / CLOCKS_PER_SEC << endl;
@@ -205,7 +209,7 @@ void Sort::quick()
 	check();
 }
 
-void Sort::quickSort(const int left, const int right, int& total)
+void Sort::quickSort(const int left, const int right)
 {
 	int i = left, j = right;//分别指向数组的头尾
 	if (left > right)
@@ -227,25 +231,25 @@ void Sort::quickSort(const int left, const int right, int& total)
 	swap(copyGroup[i], copyGroup[left]);//基准元归位
 	++total;
 
-	quickSort(left, i - 1, total);//继续处理左半部分
-	quickSort(i + 1, right, total);//继续处理右半部分
+	quickSort(left, i - 1);//继续处理左半部分
+	quickSort(i + 1, right);//继续处理右半部分
 }
 
 void Sort::heap()
 {
 	copyNumGroup();//将数据复制到操作数组中
-	int total = 0;
+	this->total = 0;//交换计数归0
 	clock_t start, finish;
 
 	start = clock();
 	for (int i = size / 2;i >= 0;--i)//建堆,最大的元素位于根部
-		percDown(i, size, total);
+		percDown(i, size);
 	for (int i = size - 1;i > 0;--i)
 	{
 		/*将堆中最大元素排在排序区头部，排序区整体上为由小到大*/
 		swap(copyGroup[i], copyGroup[0]);
 		++total;
-		percDown(0, i, total);
+		percDown(0, i);
 	}
 	finish = clock();
 
@@ -254,7 +258,7 @@ void Sort::heap()
 	check();
 }
 
-void Sort::percDown(const int downIndex, const int endIndex, int& total)
+void Sort::percDown(const int downIndex, const int endIndex)
 {
 	int childIndex;//它将指向两个儿子中较大的那一个
 	for (int i = downIndex;2 * i + 1 < endIndex;i = childIndex)
@@ -271,4 +275,69 @@ void Sort::percDown(const int downIndex, const int endIndex, int& total)
 		else//下滤的元素找到了合适的位置；恢复了堆序性
 			break;
 	}
+}
+
+void Sort::merge()
+{
+	copyNumGroup();//将数据复制到操作数组中
+	int total = 0;//比较计数归0
+	clock_t start, finish;
+
+	start = clock();
+	int* tempArr = new int[size];
+	if (tempArr == NULL)
+	{
+		cerr << "内存空间不足！" << endl;
+		exit(1);
+	}
+
+	divideMerge(tempArr, 0, size - 1);
+	free(tempArr);
+	tempArr = NULL;
+	finish = clock();
+
+	cout << "堆排序所用时间：\t" << float(finish - start) / CLOCKS_PER_SEC << endl;
+	cout << "堆排序比较次数：\t" << total << endl;
+	check();
+}
+
+void Sort::divideMerge(int* tempArr, const int left, const int right)
+{
+	int center;
+	if (left < right)//传入的部分可以继续划分
+	{
+		center = (left + right) / 2;
+		/*划分为left~center部分，center成为新的right*/
+		divideMerge(tempArr, left, center);
+		/*划分为center+1~right部分，center+1成为新的left*/
+		divideMerge(tempArr, center + 1, right);
+		/*将两部分合并*/
+		mergeTwoPart(tempArr, left, center + 1, right);
+	}
+}
+
+void Sort::mergeTwoPart(int* tempArr, int left, int right, int rightEnd)
+{
+	int leftEnd = right - 1;//左边部分的结尾位于right前一位
+	int tempPos = left;//临时数组的索引位置
+	int numOfElem = rightEnd - left + 1;//两个数组中元素的总数
+
+	while (left <= leftEnd && right <= rightEnd)//任意一部分未被检测完时
+	{
+		++total;
+		if (copyGroup[left] < copyGroup[right])//找出两部分数组中对应位置上较小的
+			tempArr[tempPos++] = copyGroup[left++];//将左边数组上的数字放入临时数组
+		else
+			tempArr[tempPos++] = copyGroup[right++];
+	}
+
+	/*下面两个while只可能执行一个，目的是将未检测完的那个数组插入临时数组*/
+	while (left <= leftEnd)//将左边数组剩余部分顺序插入临时数组
+		tempArr[tempPos++] = copyGroup[left++];
+	while (right <= rightEnd)//将右边数组剩余部分顺序插入临时数组
+		tempArr[tempPos++] = copyGroup[right++];
+
+	/*将排序好的元素从临时数组中拷贝回操作数组*/
+	for (int i = 0;i < numOfElem;++i, --rightEnd)
+		copyGroup[rightEnd] = tempArr[rightEnd];
 }
