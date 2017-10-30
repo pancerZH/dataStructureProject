@@ -41,7 +41,7 @@ Sort::Sort(const int size)
 	}
 
 	for (int i = 0;i < size;++i)
-		*(numGroup + i) = rand();
+		*(numGroup + i) = rand() % size;
 }
 
 void Sort::copyNumGroup()
