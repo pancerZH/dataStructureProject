@@ -11,6 +11,7 @@ int main()
 	cout << "**\t\t5 --- 快速排序\t\t**" << endl;
 	cout << "**\t\t6 --- 堆排序\t\t**" << endl;
 	cout << "**\t\t7 --- 归并排序\t\t**" << endl;
+	cout << "**\t\t8 --- 桶排序\t\t**" << endl;
 	cout << "==========================================" << endl;
 
 	cout << endl << "请输入要产生的随机数的个数：";
@@ -57,6 +58,9 @@ int main()
 			break;
 		case 7:
 			sort->merge();
+			break;
+		case 8:
+			sort->bucket();
 			break;
 		default:
 			return 0;

@@ -22,6 +22,7 @@ public:
 	void merge();//归并排序
 	void divideMerge(int*, const int, const int);//归并排序的子函数，用于划分数组
 	void mergeTwoPart(int*, int, int, int);//归并排序的子函数，用于合并两个已排序的表
+	void bucket();//桶排序
 private:
 	int size;
 	int* numGroup;
@@ -41,6 +42,7 @@ Sort::Sort(const int size)
 	}
 
 	for (int i = 0;i < size;++i)
+		/*保证生成的随机数大小范围为0~size-1*/
 		*(numGroup + i) = rand() % size;
 }
 
@@ -292,7 +294,7 @@ void Sort::merge()
 	}
 
 	divideMerge(tempArr, 0, size - 1);
-	free(tempArr);
+	delete[] tempArr;
 	tempArr = NULL;
 	finish = clock();
 
@@ -340,4 +342,38 @@ void Sort::mergeTwoPart(int* tempArr, int left, int right, int rightEnd)
 	/*将排序好的元素从临时数组中拷贝回操作数组*/
 	for (int i = 0;i < numOfElem;++i, --rightEnd)
 		copyGroup[rightEnd] = tempArr[rightEnd];
+}
+
+void Sort::bucket()
+{
+	copyNumGroup();//将数据复制到操作数组中
+	this->total = 0;//比较计数归0
+	clock_t start, finish;
+
+	start = clock();
+	int* bucket = new int[size];//开辟桶空间
+	if (bucket == NULL)
+	{
+		cerr << "内存空间不足！" << endl;
+		exit(1);
+	}
+	/*将桶内元素赋值为0*/
+	for (int i = 0;i < size;++i)
+		bucket[i] = 0;
+
+	/*将待排序元素放入桶中*/
+	for (int i = 0;i < size;++i)
+		++bucket[copyGroup[i]];
+
+	/*将桶中元素按顺序放回操作数组*/
+	int pos = 0;
+	for (int i = 0;i < size;++i)
+		for (int j = bucket[i];j > 0;--j)
+			copyGroup[pos++] = i;
+	delete[] bucket;
+	finish = clock();
+
+	cout << "桶排序所用时间：\t" << float(finish - start) / CLOCKS_PER_SEC << endl;
+	cout << "桶排序比较次数：\t" << total << endl;
+	check();
 }
