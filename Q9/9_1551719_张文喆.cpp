@@ -74,10 +74,24 @@ void buildTree(OrderTree* tree)
 	cout << "Please input key to create Bsort_Tree:" << endl;
 	int num;
 	cin >> num;
+	if (cin.fail())
+	{
+		cerr << "输入失败，请输入整数！" << endl;
+		cin.clear();
+		cin.ignore();
+		return;
+	}
 	while (num != 0)//0是输入结束的标记
 	{
 		tree->insert(num);
 		cin >> num;
+		if (cin.fail())
+		{
+			cerr << "输入失败，请输入整数！" << endl;
+			cin.clear();
+			cin.ignore();
+			return;
+		}
 	}
 
 	tree->showAll(tree->getRoot());
@@ -89,6 +103,13 @@ void insert(OrderTree* tree)
 	cout << "Please input key which inserted:";
 	int num;
 	cin >> num;
+	if (cin.fail())
+	{
+		cerr << "请输入整数！" << endl;
+		cin.clear();
+		cin.ignore();
+		return;
+	}
 	tree->insert(num);
 
 	tree->showAll(tree->getRoot());
@@ -100,5 +121,12 @@ void search(OrderTree* tree)
 	cout << "Please input key which searched:";
 	int num;
 	cin >> num;
+	if (cin.fail())
+	{
+		cerr << "请输入整数！" << endl;
+		cin.clear();
+		cin.ignore();
+		return;
+	}
 	tree->searh(num);
 }
