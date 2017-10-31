@@ -8,6 +8,7 @@ int main()
 	{
 		cerr << "请输入大于0的数字N！" << endl;
 		cin.clear();
+		cin.ignore();
 		cin >> size;
 	}
 
