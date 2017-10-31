@@ -23,6 +23,7 @@ int main()
 	{
 		cerr << "请输入大于0小于INT_MAX的随机数个数！" << endl;
 		cin.clear();
+		cin.ignore();
 		cin >> num;
 	}
 	auto sort = new Sort(num);
