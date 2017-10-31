@@ -38,7 +38,8 @@ class Graph {
 public:
 	Graph(const int);
 	~Graph();
-	int storeName(const string);//将名称储存起来，返回编号
+	bool storeName(const string);//将名称储存起来
+	int findName(const string);//将内部编号转化为原始名称
 	bool storeAdja(const int, const int, const int);//将两个点储存在邻接表中
 	bool initPrim(const int);//初始化最小生成树的各项相关参数
 	int getMinFromFeatureList();
@@ -87,20 +88,28 @@ Graph::~Graph()
 	}
 }
 
-int Graph::storeName(const string name)
+bool Graph::storeName(const string name)
 {
 	for (int i = 0;i < numOfNode;++i)
 	{
 		if (nameList[i] == name)//如果已经在名称列表中
-			return i;
+			return false;
 		else if (nameList[i] == "null")//如果不在名称列表中
 		{
 			nameList[i] = name;
-			return i;
+			return true;
 		}
 	}
-	cerr << "输入错误！" << endl;
+	cerr << "输入错误！" << endl;//新名字已无法放入列表
 	exit(2);
+}
+
+int Graph::findName(const string name)
+{
+	for (int i = 0;i < numOfNode;++i)
+		if (nameList[i] == name)//如果找到了名称
+			return i;
+	return -1;//未找到名称
 }
 
 /*将num2插入到num1名下的邻接表中。对于无向图，应交换num1和num2后再调用一次*/
@@ -165,6 +174,12 @@ bool Graph::buildPrimTree()
 	while (!allPointChecked)
 	{
 		int index = getMinFromFeatureList();//找到当前未达到最优状态的权值最小的点
+		if (index == -1)
+		{
+			cerr << "请先添加电网的边！" << endl;
+			return false;
+		}
+
 		Node* temp = adjaList[index];//从邻接表中提取index的邻接点
 		while (temp != NULL)
 		{
@@ -195,7 +210,7 @@ void Graph::printPrimTree()
 			{
 				string name = nameList[j];
 				string whoChangeMe = nameList[featureList[j].whoChangeMe];
-				cout << whoChangeMe << "-(" << featureList[j].weight << ")->" << name << endl;
+				cout << whoChangeMe << "-(" << featureList[j].weight << ")->" << name << '\t';
 			}
 		}
 	}

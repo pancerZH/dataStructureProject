@@ -34,6 +34,7 @@ int main()
 			{
 				cerr << "请输入大于0小INT_MAX的顶点个数！" << endl;
 				cin.clear();
+				cin.ignore();//防止缓冲区溢出
 				cin >> num;
 			}
 
@@ -55,6 +56,11 @@ int main()
 			buildTree(graph);
 			break;
 		case 'D':
+			if (graph == NULL)
+			{
+				cerr << "请先创建电网顶点！" << endl;
+				break;
+			}
 			graph->printPrimTree();
 			break;
 		default:
@@ -70,20 +76,30 @@ void enterNode(int size, Graph* graph)
 	{
 		string name;
 		cin >> name;
-		graph->storeName(name);
+		if (!graph->storeName(name))
+		{
+			cerr << "请勿输入重名顶点！" << endl;
+			exit(3);
+		}
 	}
 }
 
 void enterEdge(Graph* graph)
 {
+	if (graph == NULL)
+	{
+		cerr << "请先创建电网顶点！" << endl;
+		return;
+	}
+
 	int num1, num2, money;
 	string name1, name2;
 	cout << "请输入两个顶点及边：";
 	cin >> name1 >> name2 >> money;
 	while (name1 != "?" && name2 != "?" && money > 0)
 	{
-		num1 = graph->storeName(name1);
-		num2 = graph->storeName(name2);
+		num1 = graph->findName(name1);
+		num2 = graph->findName(name2);
 		/*因为是无向图，所以两个点都要互相储存对方*/
 		graph->storeAdja(num1, num2, money);
 		graph->storeAdja(num2, num1, money);
@@ -95,11 +111,23 @@ void enterEdge(Graph* graph)
 
 void buildTree(Graph* graph)
 {
+	if (graph == NULL)
+	{
+		cerr << "请先创建电网顶点！" << endl;
+		return;
+	}
+
 	string name;
 	cout << "请输入起始顶点：";
 	cin >> name;
-	int index = graph->storeName(name);
-	graph->initPrim(index);
-	graph->buildPrimTree();
-	cout << "生成Prim最小生成树！" << endl;
+	int index = graph->findName(name);
+	if (!graph->initPrim(index))
+	{
+		cout << "Prim最小生成树生成失败！" << endl;
+		return;
+	}
+	if (graph->buildPrimTree())
+		cout << "生成Prim最小生成树！" << endl;
+	else
+		cout << "Prim最小生成树生成失败！" << endl;
 }
