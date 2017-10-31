@@ -10,6 +10,7 @@ int main()
 	{
 		cout << "请输入大于0小于INT_MAX的总人数！" << endl;
 		cin.clear();
+		cin.ignore();
 		cin >> totalNum;
 	}
 
@@ -19,6 +20,7 @@ int main()
 	{
 		cout << "请输入大于0小于等于总人数的开始位置！" << endl;
 		cin.clear();
+		cin.ignore();
 		cin >> startNum;
 	}
 
@@ -28,6 +30,7 @@ int main()
 	{
 		cout << "请输入大于0小于等于总人数N的死亡数字M！" << endl;
 		cin.clear();
+		cin.ignore();
 		cin >> deathNum;
 	}
 
@@ -37,6 +40,7 @@ int main()
 	{
 		cout << "请输入大于等于0小于等于总人数N的剩余生者人数K！" << endl;
 		cin.clear();
+		cin.ignore();
 		cin >> leftNum;
 	}
 
