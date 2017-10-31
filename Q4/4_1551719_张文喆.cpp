@@ -10,6 +10,7 @@ int main()
 	{
 		cout << "请输入大于0小于INT_MAX的皇后个数！" << endl;
 		cin.clear();
+		cin.ignore();
 		cin >> size;
 	}
 	cout << endl << "皇后摆法：" << endl << endl;
