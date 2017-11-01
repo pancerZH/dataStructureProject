@@ -230,7 +230,12 @@ void OrderTree::showAll(Node* node)
 void OrderTree::showAll(Node* node, const int depth)
 {
 	if (node == NULL)
+	{
+		for (int i = depth;i > 0;--i)
+			cout << '\t';
+		cout << "Пе" << endl;
 		return;
+	}
 
 	showAll(node->left, depth + 1);
 	for (int i = depth;i > 0;--i)
