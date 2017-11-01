@@ -30,6 +30,7 @@ public:
 	Node* doubleRotateWithRight(Node*);//右子树双旋转
 	bool searh(const int);
 	void showAll(Node*);
+	void showAll(Node*, const int);
 	bool isEmpty;
 private:
 	Node* root;
@@ -139,7 +140,7 @@ Node* OrderTree::insert(const int num, Node* tree)
 		return tree;
 	}
 
-	tree->height = max(getHeight(tree->left), getHeight(tree->right));//更新根的高度
+	tree->height = max(getHeight(tree->left), getHeight(tree->right)) + 1;//更新根的高度
 	isEmpty = false;//二叉排序树不再为空
 	return tree;
 }
@@ -224,4 +225,16 @@ void OrderTree::showAll(Node* node)
 	showAll(node->left);
 	cout << node->num << "->";
 	showAll(node->right);
+}
+
+void OrderTree::showAll(Node* node, const int depth)
+{
+	if (node == NULL)
+		return;
+
+	showAll(node->left, depth + 1);
+	for (int i = depth;i > 0;--i)
+		cout << '\t';
+	cout << node->num << endl;
+	showAll(node->right, depth + 1);
 }

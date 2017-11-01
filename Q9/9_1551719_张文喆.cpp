@@ -123,7 +123,7 @@ void buildTree(OrderTree* tree)
 		}
 	}
 
-	tree->showAll(tree->getRoot());
+	tree->showAll(tree->getRoot(), 0);
 	cout << endl;
 }
 
@@ -152,7 +152,7 @@ void buildTreeAVL(OrderTree* tree)
 		}
 	}
 
-	tree->showAll(tree->getRoot());
+	tree->showAll(tree->getRoot(), 0);
 	cout << endl;
 }
 
@@ -176,7 +176,7 @@ void insert(OrderTree* tree)
 	}
 	tree->insert(num);
 
-	tree->showAll(tree->getRoot());
+	tree->showAll(tree->getRoot(), 0);
 	cout << endl;
 }
 
@@ -200,7 +200,7 @@ void insertAVL(OrderTree* tree)
 	}
 	tree->renewRoot(tree->insert(num, tree->getRoot()));
 
-	tree->showAll(tree->getRoot());
+	tree->showAll(tree->getRoot(), 0);
 	cout << endl;
 }
 
