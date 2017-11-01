@@ -1,5 +1,6 @@
 #include "orderTree.h"
 
+bool checkIfThereIsATree(OrderTree*);
 void buildTree(OrderTree*);
 void insert(OrderTree*);
 void search(OrderTree*);
@@ -14,13 +15,7 @@ int main()
 	cout << "**\t\t4 --- 退出程序\t\t**" << endl;
 	cout << "==========================================" << endl;
 
-	OrderTree* tree = new OrderTree();
-	if (tree == NULL)
-	{
-		cerr << "内存空间不足!" << endl;
-		exit(1);
-	}
-
+	OrderTree* tree = NULL;
 	while (1)
 	{
 		int operation = 4;
@@ -30,32 +25,16 @@ int main()
 		switch (operation)
 		{
 		case 1:
-			if (!tree->isEmpty)//检查是否已经建立过一棵树
+			if (!checkIfThereIsATree(tree))
 			{
-				cout << "There is already a Bsort_Tree" << endl;
-				cout << "Do you want to delete it?(y/n)";
-				char ch;
-				cin >> ch;
-				cin.clear();
-
-				if (ch == 'y' || ch == 'Y')
+				tree = new OrderTree();
+				if (tree == NULL)
 				{
-					delete tree;
-					tree = new OrderTree();
-					cout << "The old Tree has been deleted!" << endl;
-					if (tree == NULL)
-					{
-						cerr << "内存空间不足！" << endl;
-						exit(1);
-					}
+					cerr << "内存空间不足!" << endl;
+					exit(1);
 				}
-				else
-				{
-					cout << "I will not delete the old Tree" << endl;
-					break;
-				}
+				buildTree(tree);
 			}
-			buildTree(tree);
 			break;
 		case 2:
 			insert(tree);
@@ -67,6 +46,32 @@ int main()
 			return 0;
 		}
 	}
+}
+
+bool checkIfThereIsATree(OrderTree* tree)
+{
+	if (!tree->isEmpty)//检查是否已经建立过一棵树
+	{
+		cout << "There is already a Bsort_Tree" << endl;
+		cout << "Do you want to delete it?(y/n)";
+		char ch;
+		cin >> ch;
+		cin.clear();
+
+		if (ch == 'y' || ch == 'Y')
+		{
+			delete tree;
+			tree = NULL;
+			cout << "The old Tree has been deleted!" << endl;
+			return false;
+		}
+		else
+		{
+			cout << "I will not delete the old Tree" << endl;
+			return true;
+		}
+	}
+	return false;//没有建立过树
 }
 
 void buildTree(OrderTree* tree)
@@ -100,6 +105,12 @@ void buildTree(OrderTree* tree)
 
 void insert(OrderTree* tree)
 {
+	if (tree == NULL)
+	{
+		cerr << "请先建立二叉树！" << endl;
+		return;
+	}
+
 	cout << "Please input key which inserted:";
 	int num;
 	cin >> num;
@@ -118,6 +129,12 @@ void insert(OrderTree* tree)
 
 void search(OrderTree* tree)
 {
+	if (tree == NULL)
+	{
+		cerr << "请先建立二叉树！" << endl;
+		return;
+	}
+
 	cout << "Please input key which searched:";
 	int num;
 	cin >> num;
