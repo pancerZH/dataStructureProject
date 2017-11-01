@@ -18,6 +18,7 @@ public:
 		:root(NULL), isEmpty(true) {}
 	~OrderTree();
 	Node* getRoot() { return root; }
+	void renewRoot(Node* newRoot) { root = newRoot; }
 	void releaseNode(Node*);
 	bool insert(const int);//插入普通二叉查找树
 	Node* insert(const int, Node*);//插入AVL树
@@ -139,6 +140,7 @@ Node* OrderTree::insert(const int num, Node* tree)
 	}
 
 	tree->height = max(getHeight(tree->left), getHeight(tree->right));//更新根的高度
+	isEmpty = false;//二叉排序树不再为空
 	return tree;
 }
 
