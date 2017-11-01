@@ -216,8 +216,20 @@ void Sort::quick()
 void Sort::quickSort(const int left, const int right)
 {
 	int i = left, j = right;//分别指向数组的头尾
-	if (left > right)
+	if (right - left <= 20)//在数据较少时换用直接插入排序
+	{
+		for (int i = left;i <= right;++i)
+		{
+			/*下面的每次循环都要检测第i个元素是否可以放在第j-1个元素之前*/
+			/*由于前i-1个元素已经排好序，所以一旦发现无法继续向前移动，则停止循环*/
+			for (int j = i;j > 0 && copyGroup[j - 1] > copyGroup[j];--j)
+			{
+				swap(copyGroup[j], copyGroup[j - 1]);//每次将第i个元素向前移动
+				++total;
+			}
+		}
 		return;
+	}
 
 	int key = copyGroup[left];//找到基准元
 	while (i != j)
