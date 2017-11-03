@@ -9,6 +9,7 @@ public:
 	bool extendSpace();//实现倍增数组
 	void swap(int&, int&);
 	bool insert(const int);
+	int popMin();
 	void percolateUp(const int);//上滤
 	void percolateDown(const int);//下滤
 	void showHeap();
@@ -91,6 +92,22 @@ bool Heap::insert(const int num)
 	percolateUp(length);
 	++length;
 	return true;
+}
+
+int Heap::popMin()
+{
+	if (length <= 1)
+	{
+		cerr << "二叉堆中没有元素！" << endl;
+		return INT_MIN;
+	}
+
+	int min = head[1];
+	head[1] = head[length - 1];
+	--length;
+	percolateDown(1);
+
+	return min;
 }
 
 void Heap::percolateUp(const int index)

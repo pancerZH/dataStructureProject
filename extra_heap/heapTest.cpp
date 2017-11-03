@@ -16,6 +16,8 @@ int main()
 	auto heap = Heap(size);
 	heap.insert(10);
 	heap.showHeap();
+	heap.popMin();
+	heap.showHeap();
 	getchar();
 	getchar();
 	return 0;
