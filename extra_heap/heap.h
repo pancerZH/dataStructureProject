@@ -1,6 +1,9 @@
 #include <iostream>
+#include <stack>
 
 using namespace std;
+
+/*===========================================以下为二叉堆的实现===========================================*/
 
 class Heap {
 public:
@@ -153,4 +156,152 @@ void Heap::showNum(const int index, const int depth)
 		cout << '\t';
 	cout << head[index] << endl;
 	showNum(index * 2 + 1, depth + 1);
+}
+
+/*===========================================以上为二叉堆的实现===========================================*/
+
+/*===========================================以下为左式堆的实现===========================================*/
+
+class Node {
+public:
+	Node(const int elem)
+		:left(NULL), right(NULL), elem(elem), Npl(0) {}
+	Node* left;
+	Node* right;
+	int elem;
+	int Npl;
+};
+
+class LeftistHeap {
+public:
+	LeftistHeap(const int);
+	~LeftistHeap();
+	void deleteNode(Node*);
+	void insert(Node*);
+	void updateNpl(Node*);
+	void show();
+	void showNum(Node*, const int);
+private:
+	Node* root;
+};
+
+LeftistHeap::LeftistHeap(const int size)//要求size大于0
+	:root(NULL)
+{
+	cout << "请输入堆中数字！" << endl;
+	int i = size, num;
+	while (i--)
+	{
+		cin >> num;
+		while (cin.fail())
+		{
+			cerr << "请输入整数范围内的数字！" << endl;
+			cin.clear();
+			cin.ignore();
+			cin >> num;
+		}
+
+		Node* node = new Node(num);
+		if (node == NULL)
+		{
+			cerr << "内存空间不足！" << endl;
+			exit(1);
+		}
+		insert(node);
+	}
+}
+
+LeftistHeap::~LeftistHeap()
+{
+	deleteNode(root);
+}
+
+void LeftistHeap::deleteNode(Node* node)
+{
+	if (node == NULL)
+		return;
+
+	deleteNode(node->left);
+	deleteNode(node->right);
+	delete node;
+}
+
+void LeftistHeap::insert(Node* node)
+{
+	if (root == NULL)
+	{
+		root = node;
+		return;
+	}
+
+	stack<Node*> path;
+	Node* temp = root;
+	while (temp->left != NULL && temp->right != NULL)
+	{
+		path.push(temp);//将插入经过的路径放入栈中
+		temp = temp->left;//优先插入到左子树，除非右儿子为空
+	}
+	if (temp->left == NULL)
+		temp->left = node;
+	else
+		temp->right = node;
+
+	/*更新插入路径上各节点的高度*/
+	for (size_t i = 0;i < path.size();++i)
+	{
+		updateNpl(path.top());
+		path.pop();
+	}
+}
+
+void LeftistHeap::updateNpl(Node* node)
+{
+	if (node == NULL)
+		return;
+	else if (node->left == NULL && node->right == NULL)
+	{
+		node->Npl = 0;
+		return;
+	}
+	else if (node->left != NULL && node->right == NULL)
+	{
+		node->Npl = node->left->Npl + 1;
+		return;
+	}
+	else if (node->left == NULL && node->right != NULL)
+	{
+		node->Npl = node->right->Npl + 1;
+		return;
+	}
+	else
+	{
+		int min = node->left->Npl;
+		if (min > node->right->Npl)
+			min = node->right->Npl;
+		node->Npl = min + 1;
+		return;
+	}
+}
+
+void LeftistHeap::show()
+{
+	showNum(root, 0);
+}
+
+void LeftistHeap::showNum(Node* node, const int depth)
+{
+	int i = depth;
+	if (node == NULL)
+	{
+		while (i--)
+			cout << '\t';
+		cout << "空" << endl;
+		return;
+	}
+
+	showNum(node->right, depth + 1);
+	while (i--)
+		cout << '\t';
+	cout << node->elem << endl;
+	showNum(node->left, depth + 1);
 }
