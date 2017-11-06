@@ -176,14 +176,24 @@ class LeftistHeap {
 	/*要求左儿子的Npl大于等于右子树的Npl*/
 public:
 	LeftistHeap(const int);
+	LeftistHeap(Node* newRoot)
+		:root(newRoot) {}
 	~LeftistHeap();
+
+	/*重载+运算符用于合并操作*/
+	friend LeftistHeap operator +(const LeftistHeap&, const LeftistHeap&);
+	/*重载=运算符用于对赋值进行操作*/
+	LeftistHeap& operator =(LeftistHeap&);
+
 	void deleteNode(Node*&);
 	void insert(Node*);
-	void updateNpl(Node*);
+	void updateNpl(Node*) const;
 	void show();
 	void showNum(Node*, const int);
-	Node* merge(Node*, Node*);
-	Node* mergeTwoParts(Node*, Node*);
+	Node* copyHeap(const Node*) const;
+	Node* copyNode(const Node*) const;
+	Node* merge(Node*, Node*) const;
+	Node* mergeTwoParts(Node*, Node*) const;
 	void updateRoot(Node* newRoot) { root = newRoot; }
 	Node* getRoot() { return root; }
 private:
@@ -223,13 +233,53 @@ LeftistHeap::~LeftistHeap()
 
 void LeftistHeap::deleteNode(Node*& node)
 {
-	if (node == NULL || int(node) == 0xdddddddd)
+	if (node == NULL)
 		return;
 
 	deleteNode(node->left);
 	deleteNode(node->right);
 	delete node;
 	node = NULL;
+}
+
+LeftistHeap operator +(const LeftistHeap& h1, const LeftistHeap& h2)
+{
+	/*将两个左式堆的内容拷贝*/
+	Node* newH1 = h1.copyHeap(h1.root);
+	Node* newH2 = h2.copyHeap(h2.root);
+
+	Node* newRoot = h1.merge(newH1, newH2);
+	return LeftistHeap(newRoot);
+}
+
+Node* LeftistHeap::copyHeap(const Node* node) const
+{
+	if (node == NULL)
+		return NULL;
+
+	Node* newNode = copyNode(node);
+	newNode->left = copyHeap(node->left);
+	newNode->right = copyHeap(node->right);
+	return newNode;
+}
+
+Node* LeftistHeap::copyNode(const Node* node) const
+{
+	Node* newNode = new Node(node->elem);
+	if (newNode == NULL)
+	{
+		cerr << "内存空间不足！" << endl;
+		exit(1);
+	}
+	newNode->Npl = node->Npl;
+	return newNode;
+}
+
+LeftistHeap& LeftistHeap::operator =(LeftistHeap& newHeap)
+{
+	deleteNode(this->root);
+	this->root = newHeap.root;
+	return newHeap;
 }
 
 void LeftistHeap::insert(Node* node)
@@ -268,7 +318,7 @@ void LeftistHeap::insert(Node* node)
 	}
 }
 
-void LeftistHeap::updateNpl(Node* node)
+void LeftistHeap::updateNpl(Node* node) const
 {
 	if (node == NULL)
 		return;
@@ -320,7 +370,7 @@ void LeftistHeap::showNum(Node* node, const int depth)
 	showNum(node->left, depth + 1);
 }
 
-Node* LeftistHeap::merge(Node* node1, Node* node2)
+Node* LeftistHeap::merge(Node* node1, Node* node2) const
 {
 	if (node1 == NULL)
 		return node2;
@@ -333,7 +383,7 @@ Node* LeftistHeap::merge(Node* node1, Node* node2)
 }
 
 /*保证master和servant都不为NULL*/
-Node* LeftistHeap::mergeTwoParts(Node* master, Node* servant)
+Node* LeftistHeap::mergeTwoParts(Node* master, Node* servant) const
 {
 	if (master->left == NULL)//master是独立点
 		master->left = servant;
