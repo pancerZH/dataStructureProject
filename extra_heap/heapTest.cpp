@@ -44,6 +44,12 @@ void testLeftistHeap()
 		cin >> size;
 	}
 
-	auto leftistHeap = LeftistHeap(size);
-	leftistHeap.show();
+	auto leftistHeap1 = LeftistHeap(size);
+	leftistHeap1.show();
+	/*cout << "===========================================" << endl;
+	auto leftistHeap2 = LeftistHeap(size);
+	leftistHeap2.show();
+	cout << "===========================================" << endl;
+	leftistHeap1.updateRoot(leftistHeap1.merge(leftistHeap1.getRoot(), leftistHeap2.getRoot()));
+	leftistHeap1.show();*/
 }

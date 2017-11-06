@@ -173,14 +173,19 @@ public:
 };
 
 class LeftistHeap {
+	/*要求左儿子的Npl大于等于右子树的Npl*/
 public:
 	LeftistHeap(const int);
 	~LeftistHeap();
-	void deleteNode(Node*);
+	void deleteNode(Node*&);
 	void insert(Node*);
 	void updateNpl(Node*);
 	void show();
 	void showNum(Node*, const int);
+	Node* merge(Node*, Node*);
+	Node* mergeTwoParts(Node*, Node*);
+	void updateRoot(Node* newRoot) { root = newRoot; }
+	Node* getRoot() { return root; }
 private:
 	Node* root;
 };
@@ -216,14 +221,15 @@ LeftistHeap::~LeftistHeap()
 	deleteNode(root);
 }
 
-void LeftistHeap::deleteNode(Node* node)
+void LeftistHeap::deleteNode(Node*& node)
 {
-	if (node == NULL)
+	if (node == NULL || int(node) == 0xdddddddd)
 		return;
 
 	deleteNode(node->left);
 	deleteNode(node->right);
 	delete node;
+	node = NULL;
 }
 
 void LeftistHeap::insert(Node* node)
@@ -236,12 +242,20 @@ void LeftistHeap::insert(Node* node)
 
 	stack<Node*> path;
 	Node* temp = root;
-	while (temp->left != NULL && temp->right != NULL)
+	while (temp->left != NULL && temp->right != NULL && node->elem > temp->elem)
 	{
 		path.push(temp);//将插入经过的路径放入栈中
 		temp = temp->left;//优先插入到左子树，除非右儿子为空
 	}
-	if (temp->left == NULL)
+	if (temp->elem > node->elem)
+	{
+		node->left = temp;
+		if (!path.empty())
+			path.top()->left = node;
+		else
+			root = node;
+	}
+	else if (temp->left == NULL)
 		temp->left = node;
 	else
 		temp->right = node;
@@ -304,4 +318,38 @@ void LeftistHeap::showNum(Node* node, const int depth)
 		cout << '\t';
 	cout << node->elem << endl;
 	showNum(node->left, depth + 1);
+}
+
+Node* LeftistHeap::merge(Node* node1, Node* node2)
+{
+	if (node1 == NULL)
+		return node2;
+	if (node2 == NULL)
+		return node1;
+	if (node1->elem > node2->elem)//将根元素大的插入根元素小的
+		return mergeTwoParts(node2, node1);
+	else
+		return mergeTwoParts(node1, node2);
+}
+
+/*保证master和servant都不为NULL*/
+Node* LeftistHeap::mergeTwoParts(Node* master, Node* servant)
+{
+	if (master->left == NULL)//master是独立点
+		master->left = servant;
+	else
+	{
+		master->right = merge(master->right, servant);
+		/*如果合并后不符合左式堆的性质，交换左右子树*/
+		if (master->left->Npl < master->right->Npl)
+		{
+			Node* temp = master->right;
+			master->right = master->left;
+			master->left = temp;
+		}
+
+		updateNpl(master);//更新Npl
+	}
+
+	return master;
 }
