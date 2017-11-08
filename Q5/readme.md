@@ -51,4 +51,17 @@
   ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q5/image/totalWords.PNG)
   ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q5/image/timeCount.PNG)
   ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q5/image/positionCheck.PNG)
+  
+### 2. 概述
+
+- 项目要求  
+
+  本项目的设计要求可以分为三个部分实现：  
+  其一，建立一个文本文件，文件名由用户用键盘输入；  
+  其二，给定单词计数，输入一个不含空格的单词，统计输出该单词在文本中的出现次数；  
+  其三，检索给定单词，输入一个单词，检索并输出该单词所在的行号、该行中出现的次数以及在该行中的相应位置。 
+  
+- 实现方法
+
+  主要是练习散列表和链表的使用；实际上链表是用来模拟栈的。
   
