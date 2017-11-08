@@ -120,3 +120,213 @@
   |checkWord|void|检查一行文本中单词的出现情况|
   |showAll|void|展示单词的统计情况|
 
+### 4. 核心代码解释
+
+  - 创建文件并输入内容
+
+  ```c++
+  bool Paragraph::buildPara()
+  {
+    string fileName;
+    cout << "输入要建立的文件名：";
+    getline(cin, fileName);
+
+    ofstream inFile;
+    inFile.open(fileName, ios::trunc);
+    if (inFile.is_open() == false)
+    {
+      cerr << "创建文件失败！" << endl;
+      exit(2);
+    }
+
+    char c = 'n';
+    while (c == 'n')
+    {
+      string line;
+      cout << "请输入一行文本：";
+      getline(cin, line);
+      inFile << line << endl;
+
+      cout << "结束输入吗？y or n";
+      cin >> c;
+      getchar();
+    }
+    inFile.close();
+
+    return true;
+  }
+  ```
+  该函数功能分为两部分，一是建立文件，二是写入内容。注意到不论是输入文件名还是文件内容，都采用了getline()函数完成以避免空格。
+
+  - 统计文件中所有单词
+
+  ```c++
+  bool Paragraph::countWords()
+  {
+    string fileName;
+    cout << "请输入文件名：";
+    getline(cin, fileName);
+
+    ifstream outFile;
+    outFile.open(fileName, ios::_Nocreate);
+    if (outFile.is_open() == false)
+    {
+      cerr << "文件不存在或打开失败！" << endl;
+      return false;
+    }
+
+    if (tableSize != 0)//清除旧表
+    {
+      delete table;
+      table = new Sepchain(HASHSIZE);//重新建立散列表
+      if (table == NULL)
+      {
+        cerr << "空间不足！" << endl;
+        exit(1);
+      }
+    }
+
+    string word;
+    while (outFile >> word)
+    {
+      if (!table->insert(word))//插入失败
+        return false;
+      else
+        ++tableSize;
+    }
+
+    outFile.close();
+    table->showAll(fileName);
+    return true;
+  }
+  ```
+  该函数工作流程分为三步，一是试图打开文件，二是清除统计先前文件的散列表，三是进行单词统计。这里的重点是单词统计。
+
+  ```c++
+  bool Sepchain::insert(const string word)
+  {
+    const int index = hash(word);
+
+    Node* temp = &head[index];
+    Node* previous;
+    while (temp != NULL && temp->count != 0)//这个空间已有单词
+    {
+      if (temp->word == word)//找到了相同的单词
+      {
+        ++(temp->count);
+        return true;
+      }
+      else
+      {
+        previous = temp;
+        temp = temp->next;
+      }
+    }
+
+    if (temp == NULL)//向尾部插入新节点
+    {
+      temp = new Node(word);
+      if (temp == NULL)
+      {
+        cerr << "空间不足！" << endl;
+        exit(1);
+      }
+      previous->next = temp;
+      return true;
+    }
+    else//将head[index]更新为word
+    {
+      temp->word = word;
+      temp->count = 1;
+      return true;
+    }
+  }
+  ```
+  对散列表进行插入必须考虑两种情况，一是要插入的点没有元素，二是有元素。对于第一种情况直接插入即可，但由于这里采用了分离链接散列表，那么更多的可能是面对第二种情况。在第二种情况下，就要检查当前的元素对应的单词是否为我们正在插入的单词，如果是，那么表中单词计数加1，结束操作；否则继续检查下一个节点。如果一直检查到这条链的结尾，都没有找到同样的单词，那么这就说明我们正在插入的单词是一个全新的单词，那么我们把它插在这条链的末尾即可。
+
+  - 检查特定单词的出现次数及位置
+
+  ```c++
+  bool Paragraph::wordInLine()
+  {
+    char choice;
+    ...
+    cin >> choice;
+    getchar();
+
+    string fileName;
+    cout << "请输入文件名：";
+    getline(cin, fileName);
+
+    ifstream outFile;
+    outFile.open(fileName, ios::_Nocreate);
+    if (outFile.is_open() == false)
+    {
+      cerr << "文件不存在或打开失败！" << endl;
+      return false;
+    }
+
+    string word;
+    cout << "请输入要统计的单词：";
+    getline(cin, word);
+
+    string line;
+    if (choice == 'a')
+    {
+      Linklist* list = new Linklist(word, 0);
+      if (list == NULL)
+      {
+        cerr << "空间不足！" << endl;
+        exit(1);
+      }
+      while (getline(outFile, line))
+        list->checkWord(line);
+      list->showAll(fileName, choice);
+    }
+    else
+    {
+      int i = 0;//i用于表示第i行
+      while (getline(outFile, line))
+      {
+        ++i;
+        Linklist* list = new Linklist(word, i);
+        if (list == NULL)
+        {
+          cerr << "空间不足！" << endl;
+          exit(1);
+        }
+        list->checkWord(line);
+        list->showAll(fileName, choice);
+        delete list;
+      }
+    }
+
+    outFile.close();
+    return true;
+  }
+  ```
+  这里的工作分为两步：打开文件和进行统计。不过由于出现次数统计和位置统计是两个工作，我们使用choice对二者进行区分。  
+  可以看到在进行出现次数统计时，我们不断地读入一行文本，并将统计结果储存在`一个`链表中，并在读取完毕后进行打印（同样的，打印也是区分两个工作的）；而在统计出现位置时，我们将一行的统计结果储存在一个链表中，打印信息后就释放掉它，并且在下一次循环中重新建立一个链表，用于面对新的一行数据。
+
+  ```c++
+  void Linklist::checkWord(const string line)
+  {
+    int pos = 0;
+    while ((pos = line.find(word, pos)) != -1)//查找word下一个出现的位置
+    {
+      char wordHead;
+      if (pos != 0)
+        wordHead = line[pos - 1];
+      else
+        wordHead = SPACE;
+      char wordTail = line[pos + word.length()];
+
+      if (wordHead == SPACE && (wordTail == SPACE || wordTail == END))//保证搜索到的是一个单词而不是单词的一部分字母
+      {
+        insert(pos);
+      }
+      pos += word.length();
+    }
+  }
+  ```
+  这里使用了string类中的成员函数find()进行查找单词，但是这会造成一个问题：有些完整单词的子序列也会被查找出来。举个例子，查找单词interest时，如果文本中包含单词interesting，那么这个find函数也是会返回interesting单词的起始位置的。为了避免这种情况，我们必须检查返回的这个位置是不是确实是我们要找的单词，解决方案是检查这个要查找的单词的长度的前后位置是否为空格。当然我们也要考虑到单词位于句首的情况（这时单词的是没有“前面”的）。
