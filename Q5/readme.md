@@ -334,3 +334,7 @@
   ### 5. 容错测试
 
   容错较为简单，主要是在非创建文件下打开文件失败的情况。其他的诸如查询不存在的单词、将子序列识别为单词的情况已在程序设计中识别并解决。
+    
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q5/image/fileOpenError.PNG)
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q5/image/fileOpenErrora.PNG)
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q5/image/fileOpenErrorb.PNG)
