@@ -132,10 +132,11 @@ bool Tree::addFamily()
 	int numOfSon;
 	cout << "请输入" << father << "的儿女人数：";
 	cin >> numOfSon;
-	while (numOfSon < 0)
+	while (cin.fail() || numOfSon < 0)
 	{
 		cerr << "请输入大于0的儿女人数！" << endl;
 		cin.clear();
+		cin.ignore();
 		cin >> numOfSon;
 	}
 
@@ -204,6 +205,9 @@ bool Tree::dismissFamily()
 	temp->isInFamilyTree = false;//进行懒惰删除
 	temp->son = NULL;
 
+	/*为了防止删空家族树，规定祖先不可删除*/
+	if (ancestor->isInFamilyTree == false)//家族树已空
+		ancestor->isInFamilyTree = true;
 	return true;
 }
 
