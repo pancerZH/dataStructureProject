@@ -31,4 +31,4 @@
 
 - 运行截屏  
 
-    ![image](https://github.com/pancerZH/dataStructureProject/tree/master/Q6/image/run.PNG)
+  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q6/image/run.PNG)
