@@ -83,3 +83,96 @@
   |dismissFamily|bool|解散一个家庭|
   |changeName|bool|修改一个节点的名字|
   |showSons|void|展示节点的所有子女|
+
+### 4. 核心代码解释
+
+  - 为当前节点添加儿子  
+  ```c++
+  bool Node::addSon(Node* newSon)
+  {
+    if (son == NULL)//如果此节点还没有儿子，直接将新儿子置于其下
+    {
+      son = newSon;
+      return true;
+    }
+    else//若有儿子，将新儿子置为旧儿子兄弟
+    {
+      if (son->addBrother(newSon))
+        return true;
+      else
+        return false;//插入失败
+    }
+  }
+  
+  bool Node::addBrother(Node* brother)
+  {
+    Node* temp = this;
+    while (temp->brother != NULL)//找到brother链表的末尾
+    {
+      temp = temp->brother;
+    }
+    temp->brother = brother;
+    return true;
+  }
+  ```
+  对当前节点执行添加儿子操作时分为两类情况考虑：一是此节点没有儿子，这种情况下直接将此节点的儿子指针指向要添加的儿子节点即可；二是此节点已经有儿子（不论此儿子是否仍处于家谱中），此时需要将要插入的儿子节点放到此节点的儿子链表末尾，即执行addBrother操作。
+
+  - 按姓名查找家族成员  
+  ```c++
+  Node* Tree::find(string name, Node* node)
+  {
+    if (node == NULL)//已遍历到树的最深处
+      return NULL;
+    else
+    {
+      if (node->isInFamilyTree && node->getName() == name)//找到节点
+        return node;
+      else//未找到节点
+      {
+        Node* temp = node->brother;
+        temp = find(name, temp);
+        if (temp != NULL)//在node的兄弟中找到了节点
+          return temp;
+        else//node的兄弟中不包含要寻找的节点
+          temp = node->son;
+
+        temp = find(name, temp);
+        if (temp != NULL)//在node的子孙中找到了节点
+          return temp;
+        else
+          return NULL;
+      }
+    }
+  }
+  ```  
+  整个查找过程采用了深度优先遍历，在找到第一个符合要求（仍处在家谱中且名字相符）的节点后返回指向节点的指针。此函数没有特意为重名的情况准备解决方案。
+
+  - 解散局部家庭  
+  ```c++
+  bool Tree::dismissFamily()
+  {
+    string father;
+    cout << "请输入要解散家庭的人的姓名：";
+    cin >> father;
+
+    Node* temp = find(father, ancestor);
+    if (temp == NULL)
+    {
+      cerr << "不存在此人！" << endl;
+      return false;
+    }
+
+    cout << "要解散家庭的人是：" << father << endl;
+    showSons(temp);
+    releaseNode(temp->son);
+    temp->isInFamilyTree = false;//进行懒惰删除
+    temp->son = NULL;
+
+    /*为了防止删空家族树，规定祖先不可删除*/
+    if (ancestor->isInFamilyTree == false)//家族树已空
+      ancestor->isInFamilyTree = true;
+    return true;
+  }
+  ```
+  解散家庭时，该家庭的祖先（根节点）将不会被释放，而是标记之后进行懒惰删除。这是因为任一节点的第一代子女采用单向链表的方式链接，直接将其中一名子女所在的节点进行释放会破坏整条链表，使之断裂。而要解散的家庭的祖先即处于这一种尴尬的境地，他的子孙属于一个整体，可以被直接释放掉而不破坏整个家谱其他部分的完整性。  
+  除此之外，为了避免删空整个家族树使得无法进行操作，程序特别规定家族的原始祖先是不允许被删除的（即使是懒惰删除）。在解散家族祖先的家庭时，祖先会被保留下来。
