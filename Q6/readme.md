@@ -32,3 +32,54 @@
 - 运行截屏  
 
   ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q6/image/run.PNG)
+
+### 2. 概述
+
+- 项目要求  
+本项目的实质是完成兑家谱成员信息的建立，查找，插入，修改，删除等功能，可以首先定义家族成员数据结构，然后将每个功能作为一个成员函数来完成对数据的操作，最后完成主函数以验证各个函数功能并得到运行结果。
+
+- 实现方法  
+使用树完成家谱的构建。由于每一代子女数量不一，故采用儿子-兄弟的方法构建树的节点。
+
+### 3. 类及类成员介绍
+
+- #### Node类  
+
+  - ##### 成员变量  
+  |成员名称|属性|类型|描述|
+  |-------|----|----|---|
+  |son|public|Node*|指向长子的指针|
+  |brother|public|Node*|指向兄弟的指针|
+  |isInFamilyTree|public|bool|描述此节点是否还在家谱中|
+  |name|private|string|此节点成员姓名|
+
+  说明：设计isInFamilyTree是因为在解散家庭时，对家庭的主人采用了懒惰删除，故用此bool变量描述此节点是否已被删除。
+
+  - ##### 成员函数
+  |函数名称|返回值类型|描述|
+  |-------|----------|---|
+  |Node|无|构造函数|
+  |getName|string|返回节点的姓名|
+  |changeName|void|修改节点姓名|
+  |addSon|bool|为节点添加子女|
+  |addBrother|bool|为节点添加兄弟|
+
+- #### Tree类
+
+  - ##### 成员变量
+  |成员名称|属性|类型|描述|
+  |-------|----|----|---|
+  |ancestor|private|Node*|指向家谱祖先的指针|
+
+  - ##### 成员函数
+  |函数名称|返回值类型|描述|
+  |--------|--------|----|
+  |Tree|无|构造函数|
+  |~Tree|无|析构函数|
+  |releaseNode|void|释放某一节点|
+  |find|Node*|通过姓名查找节点|
+  |addFamily|bool|添加一个家庭（多个成员）|
+  |addOneSon|bool|添加一个子女|
+  |dismissFamily|bool|解散一个家庭|
+  |changeName|bool|修改一个节点的名字|
+  |showSons|void|展示节点的所有子女|
