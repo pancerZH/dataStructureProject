@@ -31,7 +31,7 @@
 
 - 运行截屏  
 
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q6/image/run.PNG)
+  ![image](./image/run.PNG)
 
 ### 2. 概述
 
@@ -182,7 +182,7 @@
   注：对于格式不正确的输入类错误不再额外展示  
 
   - 试图对不存在的人进行操作  
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q6/image/man_not_exist_error.PNG)
+  ![image](./image/man_not_exist_error.PNG)
 
   - 试图删除祖先节点（根节点）  
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q6/image/ancestor_delete_error.PNG)
+  ![image](./image/ancestor_delete_error.PNG)
