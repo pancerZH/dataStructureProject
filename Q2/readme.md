@@ -54,7 +54,7 @@
   
 - 运行截图  
 
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/run.PNG)
+  ![image](./image/run.PNG)
   
   （与题目演示中的运行结果一致）  
   
@@ -245,24 +245,24 @@
 
   输入小于等于0或者大于INT_MAX的总人数时，会被要求重新输入  
 
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/totalNumError.PNG)
+  ![image](./image/totalNumError.PNG)
   
 - #### 输入错误的开始位置  
 
   输入小于等于0或者大于总人数的开始位置，会被要求重新输入  
 
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/startNumError.PNG)  
+  ![image](./image/startNumError.PNG)  
   
 - #### 输入错误的死亡数字
 
   输入小于等于0、大于总人数的死亡数字，会被要求重新输入  
 
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/deathNumError.PNG)
+  ![image](./image/deathNumError.PNG)
   
 - #### 输入错误的生还者数字
 
   输入小于等于0、大于总人数的生还者数字，会被要求重新输入  
 
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q2/image/leftNumError.PNG)
+  ![image](./image/leftNumError.PNG)
 
 综上，程序对于不合理的输入、上溢和下溢都有很好的容错能力。
