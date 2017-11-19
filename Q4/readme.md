@@ -38,7 +38,7 @@
   
 - 运行截屏
 
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q4/image/run.PNG)
+  ![image](./image/run.PNG)
   （与题目演示中的运行结果仅有顺序上的不同）
 
 ### 2. 概述
@@ -176,7 +176,7 @@ N皇后问题的输入比较简单，只要求输入N，那么在输入上的容
 
   在这种情况下，程序会要求输入正确范围内的数字。  
   
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q4/image/error.PNG)
+  ![image](./image/error.PNG)
   
   可见，不论对于上溢还是下溢，都具有很好的容错能力。
   
@@ -184,6 +184,6 @@ N皇后问题的输入比较简单，只要求输入N，那么在输入上的容
 
   这种情况不算是错误，但是由于其没有解，所以程序有可能在逻辑上出现问题（比如打印棋盘和总解法）。  
   
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q4/image/error0.PNG)
+  ![image](./image/error0.PNG)
   
 最后值得提醒一下的是，由于这里递归函数的时间复杂度为O(n^2)，所以当输入的N比较大时，运算会非常慢，造成假死的情况。所以不建议输入较大的数字（比如100）。
