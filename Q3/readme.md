@@ -51,7 +51,7 @@
   
 - 运行截屏
 
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q3/image/run1.PNG)
+  ![image](./image/run1.PNG)
   
   （与题目演示中的运行结果一致） 
   
@@ -231,14 +231,14 @@
 
   在这种情况下，迷宫中含有圈，而寻路时不应该在圈中陷入死循环。为了保证我们的骑士确实走入到圈中了，我特地调整了findWay中的判断顺序。  
   
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q3/image/run2.PNG)
+  ![image](./image/run2.PNG)
   
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q3/image/run2Sign.jpg)
+  ![image](./image/run2Sign.jpg)
   
 - #### 没有通路情况下的测试
 
   在这种情况下，骑士不应当陷入死循环，而且打印时也要求一些变化。  
   
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q3/image/run3.PNG)
+  ![image](./image/run3.PNG)
   
-  ![image](https://github.com/pancerZH/dataStructureProject/blob/master/Q3/image/run3Sign.jpg)
+  ![image](./image/run3Sign.jpg)
