@@ -15,10 +15,10 @@ int size;
 cin >> size;
 while (size < 1)
 {
-	cerr << "请输入大于0的数字N！" << endl;
-	cin.clear();
-	cin.ignore();
-	cin >> size;
+    cerr << "请输入大于0的数字N！" << endl;
+    cin.clear();
+    cin.ignore();
+    cin >> size;
 }
 
 int count = size, length;
@@ -75,3 +75,89 @@ Heap::Heap(int* queue, const int size)
   |findBestSolu|void|构造哈夫曼树|
   |showHeap|void|打印优先队列|
 
+### 4. 核心代码解释
+
+  - 建堆  
+  ```c++
+  Heap::Heap(int* queue, const int size)
+	:queue(queue), size(size), totalMoney(0)
+  {
+      for (int i = size / 2;i > 0;--i)
+          percolateDown(i);
+  }
+  ```
+  为了便于书写代码，这个int数组的计数并不是由0开始，而是由1开始。这也是为什么数组的长度为N+1而不是N。在这种情况下，讲一个普通的数组转化为最小二叉堆十分容易：从N/2处开始进行下滤，直到位置为1的元素。  
+  下面详细介绍上滤和下滤算法的实现。
+
+  - 下滤  
+  ```c++
+  void Heap::percolateDown(const int index)
+  {
+      int i, child = 1;
+      int downElement = queue[index];
+
+      for (i = index;i * 2 <= size;i = child)
+      {
+          child = i * 2;
+          if (child < size && queue[child + 1] < queue[child])//找到该节点较小的儿子
+              ++child;
+
+          if (downElement > queue[child])
+              queue[i] = queue[child];//空穴下滤一层
+          else
+              break;
+      }
+      queue[i] = downElement;//将下滤的元素填入空穴
+  }
+  ```
+  下滤算法非常简单，我们只要一路追寻我们对其执行下滤的那个元素即可。将这个元素不断与它当前较小的儿子进行交换，这个过程一直持续到这个元素比它的儿子(们)都小，或者已经没有儿子时终止。考虑到每次都进行交换比较浪费时间，所以在上面的代码中，我选择每次将下滤元素的儿子上移，直到最后才将这个元素填入到它最终的位置上。
+
+  - 上滤
+  ```c++
+  void Heap::percolateUp()
+  {
+      int i;
+      int upElement = queue[size];//将最后一个元素上滤，故函数无需参数
+
+      for (i = size;queue[i / 2] > upElement;i /= 2)
+          queue[i] = queue[i / 2];//空穴上滤一层
+      queue[i] = upElement;//将上滤元素填入空穴
+  }
+  ```
+  相较下滤算法而言，上滤算法更加容易实现——至少代码量减少了许多。并且考虑到上滤算法适用于将插入的元素放到它该去的位置上，而插入的元素总是在一开始被放置在有限队列的末尾上，所以借助Heap类中的私有变量size，就无需为percolateUp函数设置参数了，因为它总能找到队列末尾的那个元素并将它上滤。 
+  ```c++
+  void Heap::insert(const int sum)
+  {
+      ++size;//队列伸长
+      queue[size] = sum;//将新加入的元素放在队列末尾
+      percolateUp();
+  }
+  ``` 
+
+  - 弹出最小值  
+  ```c++
+  int Heap::popMin()
+  {
+      int min = queue[1];
+      queue[1] = queue[size];//将最后一个元素放在开头
+      --size;//队列缩短
+      percolateDown(1);//下滤
+      return min;
+  }
+  ```
+  弹出最小值十分容易，因为这个优先队列的最小值位于队列的开头(位置1处)，但是为了保持堆序性，在最小值弹出后我们要重新调整剩余元素的位置；为了不破坏堆的结构性，我们只能将队列中的最后一个元素放在开头(刚刚被弹出的元素的位置)，并将它下滤。
+
+  - 找到伐木的最优策略  
+  ```c++
+  void Heap::findBestSolu()
+  {
+      while (size > 1)
+      {
+          int sum = popMin() + popMin();//将两个最小的花销加起来，并从队列中删除
+          insert(sum);//将两花销之和插入队列
+          totalMoney += sum;
+      }
+      cout << totalMoney << endl;//此时size=1，即已得到最终结果
+  }
+  ```
+  根据哈夫曼树的要求，每次找出两个最小的开销，并将它们加起来后作为一个新节点(这实际上将两者组合成了一棵树)插入到优先队列中。当队列中只剩下一个节点，也即原先的森林已经组合为唯一一棵树时，哈夫曼树就构造完成了。
