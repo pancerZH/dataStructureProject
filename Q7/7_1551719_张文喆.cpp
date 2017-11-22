@@ -28,9 +28,8 @@ int main()
 			cerr << "请输入大于0的木材长度！" << endl;
 			cin.clear();
 			cin.ignore();
-			delete queue;
-			queue = new int[size + 1];
-			count = size;
+			++count;
+			continue;
 		}
 
 		queue[size - count] = length;
