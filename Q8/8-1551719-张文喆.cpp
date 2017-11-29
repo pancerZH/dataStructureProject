@@ -98,7 +98,6 @@ void enterEdge(Graph* graph)
 	string name1, name2;
 	while(1)
 	{
-		enter_value:
 		cout << "请输入两个顶点及边：";
 		cin >> name1 >> name2 >> money;
 		if (name1 == "?" || name2 == "?")
@@ -110,14 +109,14 @@ void enterEdge(Graph* graph)
 			cerr << "输入的顶点不存在！" << endl;
 			cin.clear();
 			cin.ignore();
-			goto enter_value;//输入出错时，要求重新输入
+			continue;//输入出错时，要求重新输入
 		}
 		if (cin.fail() || money < 0)
 		{
 			cerr << "请输入正确的大于等于0的造价！" << endl;
 			cin.clear();
 			cin.ignore();
-			goto enter_value;//输入出错时，要求重新输入
+			continue;//输入出错时，要求重新输入
 		}
 
 		/*因为是无向图，所以两个点都要互相储存对方*/
