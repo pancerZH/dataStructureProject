@@ -171,6 +171,7 @@ int Graph::getMinFromFeatureList()
 bool Graph::buildPrimTree()
 {
 	bool allPointChecked = false;
+	int numOfChecked = 0;
 	while (!allPointChecked)
 	{
 		int index = getMinFromFeatureList();//找到当前未达到最优状态的权值最小的点
@@ -189,12 +190,9 @@ bool Graph::buildPrimTree()
 			temp = temp->next;
 		}
 		featureList[index].known = true;//index已被检测完毕，达到最优
+		++numOfChecked;//被检测过的点的数目加1
 
-		int i;
-		for (i = 0;i < numOfNode;++i)//检测是否所有点都被检测完
-			if (featureList[i].known == false)
-				break;
-		if (i == numOfNode)//所有点都被检测完毕
+		if (numOfChecked == numOfNode)//所有点都被检测完毕
 			allPointChecked = true;
 	}
 	return true;
