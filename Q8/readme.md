@@ -51,3 +51,56 @@ enterNode(num, graph);
 - 实现方法  
 这是图论中最典型的构建最小生成树的问题，解决方法由Prim算法和Kruskal算法。由于此题要求能够制定起始顶点，故采用Prim算法。
 
+### 3. 类及类成员介绍
+
+- #### Node类
+
+  - ##### 成员变量  
+  |成员名称|属性|类型|描述|
+  |-------|----|----|---|
+  |insideName|public|int|记录顶点的内部编号|
+  |money|public|int|记录从某一顶点到自身的开销|
+  |next|public|Node*|邻接表中指向下个顶点的指针|
+
+  - ##### 成员函数
+    仅有构造函数
+
+- #### Feature类
+
+  - ##### 成员变量  
+  |成员名称|属性|类型|描述|
+  |-------|----|----|---|
+  |known|public|bool|记录顶点是否已被加入生成树中|
+  |weight|public|int|记录从上个顶点到达自身的开销|
+  |whoChangeMe|public|int|记录树中与其连接的上个节点的编号|
+
+  - ##### 成员函数  
+  |函数名称|返回值类型|描述|
+  |-------|----------|---|
+  |Feature|无|构造函数|
+  |update|bool|修改变量值|
+
+- #### Graph类  
+
+  - ##### 成员变量  
+  |成员名称|属性|类型|描述|
+  |-------|----|----|---|
+  |numOfNode|private|int|记录图中顶点的数量|
+  |nameList|private|string*|记录节点的名称|
+  |adjaList|private|Node**|储存图的邻接表|
+  |featureList|private|Feature*|储存节点的特征值|
+
+  说明：特征值指Feature类中节点的权值、内部编号以及上个节点编号等信息
+
+  - ##### 成员函数
+  |函数名称|返回值类型|描述|
+  |-------|----------|---|
+  |Graph|无|构造函数|
+  |~Graph|无|析构函数|
+  |storeName|bool|储存顶点的名字|
+  |findName|int|将顶点的名字转换为内部编号|
+  |storeAdja|bool|邻接给定的两个顶点，并储存在邻接表中|
+  |initPrim|bool|初始化最小生成树，并检查有无孤立点|
+  |getMinFromFeatureList|int|查找featureList中权值最小且不在生成树上的点|
+  |buildPrimTree|bool|建立最小生成树|
+  |printPrimTree|void|打印最小生成树|
