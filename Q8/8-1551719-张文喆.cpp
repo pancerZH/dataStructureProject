@@ -1,5 +1,7 @@
 #include "elecNet.h"
 
+using namespace std;
+
 void enterNode(int, Graph*);
 void enterEdge(Graph*);
 void buildTree(Graph*);
@@ -30,7 +32,7 @@ int main()
 			cout << "请输入顶点的个数：";
 			int num;
 			cin >> num;
-			while (num < 1)
+			while (cin.fail() || num < 1)
 			{
 				cerr << "请输入大于0小INT_MAX的顶点个数！" << endl;
 				cin.clear();
@@ -71,7 +73,7 @@ int main()
 
 void enterNode(int size, Graph* graph)
 {
-	cout << "请依此输入各顶点的名称：" << endl;
+	cout << "请依次输入各顶点的名称：" << endl;
 	while (size--)
 	{
 		string name;
@@ -94,18 +96,33 @@ void enterEdge(Graph* graph)
 
 	int num1, num2, money;
 	string name1, name2;
-	cout << "请输入两个顶点及边：";
-	cin >> name1 >> name2 >> money;
-	while (name1 != "?" && name2 != "?" && money > 0)
+	while(1)
 	{
+		enter_value:
+		cout << "请输入两个顶点及边：";
+		cin >> name1 >> name2 >> money;
+		if (name1 == "?" || name2 == "?")
+			break;
 		num1 = graph->findName(name1);
 		num2 = graph->findName(name2);
+		if (num1 == -1 || num2 == -1)
+		{
+			cerr << "输入的顶点不存在！" << endl;
+			cin.clear();
+			cin.ignore();
+			goto enter_value;//输入出错时，要求重新输入
+		}
+		if (cin.fail() || money < 0)
+		{
+			cerr << "请输入正确的大于等于0的造价！" << endl;
+			cin.clear();
+			cin.ignore();
+			goto enter_value;//输入出错时，要求重新输入
+		}
+
 		/*因为是无向图，所以两个点都要互相储存对方*/
 		graph->storeAdja(num1, num2, money);
 		graph->storeAdja(num2, num1, money);
-
-		cout << "请输入两个顶点及边：";
-		cin >> name1 >> name2 >> money;
 	}
 }
 
@@ -121,6 +138,11 @@ void buildTree(Graph* graph)
 	cout << "请输入起始顶点：";
 	cin >> name;
 	int index = graph->findName(name);
+	if (index == -1)
+	{
+		cerr << "不存在此顶点！" << endl;
+		return;
+	}
 	if (!graph->initPrim(index))
 	{
 		cout << "Prim最小生成树生成失败！" << endl;
