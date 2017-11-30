@@ -81,7 +81,7 @@ void enterNode(int size, Graph* graph)
 		if (!graph->storeName(name))
 		{
 			cerr << "请勿输入重名顶点！" << endl;
-			exit(3);
+			++size;
 		}
 	}
 }
