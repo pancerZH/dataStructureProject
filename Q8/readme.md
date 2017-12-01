@@ -259,7 +259,28 @@ enterNode(num, graph);
   ![image](./image/same_name_error.PNG)
 
   - 输入边时出错  
-  ![image](./image/edge_error.PNG)
+  ![image](./image/edge_error.PNG)  
+  注：这里的容错是借助两个模块实现的  
+  ```c++
+    num1 = graph->findName(name1);
+    num2 = graph->findName(name2);
+    if (num1 == -1 || num2 == -1)
+    {
+      cerr << "输入的顶点不存在！" << endl;
+      cin.clear();
+      cin.ignore();
+      continue;//输入出错时，要求重新输入
+    }
+    if (cin.fail() || money < 0)
+    {
+      cerr << "请输入正确的大于等于0的造价！" << endl;
+      cin.clear();
+      cin.ignore();
+      continue;//输入出错时，要求重新输入
+    }
+
+  ```
+  说明：num1和num2记录查询到的输入的顶点的内部编号，如果得到的内部编号是-1，说明此顶点不存在，此时应提示错误并要求重新输入；当输入的开销不合理（不是大于等于0的int型整数）时，同样要求重新输入。
 
   - 指定错误的起始顶点  
   ![image](./image/start_node_error.PNG)
