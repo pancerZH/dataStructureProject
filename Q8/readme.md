@@ -247,4 +247,19 @@ enterNode(num, graph);
   这里的实现思路是：不考虑某一顶点的下一个顶点是谁，而是去考虑某一顶点的上一个顶点是哪个。这也是我们在构建Feature对象时实现的东西。  
   这里值得额外注意的地方是：我们之前在内部构建最小生成树时，都是使用的内部编号指代顶点，而在打印最小生成树时，要将内部编号转换为顶点原先的名字。通过数组的下标，我们可以很轻易地实现这一点。
 
-  
+### 5. 容错测试
+
+  - 未输入顶点的情况下运行其它选项  
+  ![image](./image/run_without_init_error.PNG)
+
+  - 输入不恰当的的顶点个数  
+  ![image](./image/num_of_node_error.PNG)
+
+  - 输入重名顶点  
+  ![image](./image/same_name_error.PNG)
+
+  - 输入边时出错  
+  ![image](./image/edge_error.PNG)
+
+  - 指定错误的起始顶点  
+  ![image](./image/start_node_error.PNG)
