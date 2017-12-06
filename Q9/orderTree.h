@@ -9,7 +9,7 @@ public:
 	int num;
 	Node* left;
 	Node* right;
-	int height;
+	int height;//记录节点的高度
 };
 
 class OrderTree {
@@ -29,9 +29,9 @@ public:
 	Node* doubleRotateWithLeft(Node*);//左子树双旋转
 	Node* doubleRotateWithRight(Node*);//右子树双旋转
 	bool searh(const int);
-	void showAll(Node*);
-	void showAll(Node*, const int);
-	bool isEmpty;
+	void showAll(Node*);//以箭头格式打印二叉树
+	void showAll(Node*, const int);//按结构打印二叉树
+	bool isEmpty;//描述二叉树是否为空
 private:
 	Node* root;
 };
