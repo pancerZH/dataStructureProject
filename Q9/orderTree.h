@@ -85,7 +85,7 @@ bool OrderTree::insert(const int num)
 				return true;
 			}
 		}
-		else
+		else//num已存在于二叉树中
 		{
 			cerr << "The input key(" << num << ") has been in!" << endl;
 			return false;
