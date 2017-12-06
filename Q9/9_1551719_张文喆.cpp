@@ -55,15 +55,30 @@ int main()
 			}
 			break;
 		case 2:
+			if (tree == NULL)
+			{
+				cerr << "请先构建二叉树！" << endl;
+				break;
+			}
 			if (!isAVL)
 				insert(tree);
 			else
 				insertAVL(tree);
 			break;
 		case 3:
+			if (tree == NULL)
+			{
+				cerr << "请先构建二叉树！" << endl;
+				break;
+			}
 			search(tree);
 			break;
 		default:
+			if (!tree)
+			{
+				delete tree;
+				tree = NULL;
+			}
 			return 0;
 		}
 	}
