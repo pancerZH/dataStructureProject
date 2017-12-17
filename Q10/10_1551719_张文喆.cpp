@@ -19,7 +19,7 @@ int main()
 	cout << endl << "请输入要产生的随机数的个数：";
 	int num;
 	cin >> num;
-	while (num < 1)
+	while (cin.fail() || num < 1)
 	{
 		cerr << "请输入大于0小于INT_MAX的随机数个数！" << endl;
 		cin.clear();
@@ -36,36 +36,36 @@ int main()
 	while (1)
 	{
 		cout << endl << "请选择排序算法：\t";
-		int operation;
+		char operation;
 		cin >> operation;
 
 		switch (operation)
 		{
-		case 1:
+		case '1':
 			sort->bubble();
 			break;
-		case 2:
+		case '2':
 			sort->selection();
 			break;
-		case 3:
+		case '3':
 			sort->insertion();
 			break;
-		case 4:
+		case '4':
 			sort->shell();
 			break;
-		case 5:
+		case '5':
 			sort->quick();
 			break;
-		case 6:
+		case '6':
 			sort->heap();
 			break;
-		case 7:
+		case '7':
 			sort->merge();
 			break;
-		case 8:
+		case '8':
 			sort->bucket();
 			break;
-		case 9:
+		case '9':
 			sort->radix();
 			break;
 		default:
