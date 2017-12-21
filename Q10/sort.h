@@ -43,6 +43,7 @@ Sort::Sort(const int size)
 		exit(1);
 	}
 
+	srand(int(time));
 	for (int i = 0;i < size;++i)
 		/*保证生成的随机数大小范围为0~size-1*/
 		*(numGroup + i) = rand() % size;
@@ -231,20 +232,27 @@ void Sort::quickSort(const int left, const int right)
 		return;
 	}
 
-	int key = copyGroup[left];//找到基准元
-	while (i != j)
+	int index = left + (rand() % (right - left + 1));
+	int key = copyGroup[index];//找到基准元
+	swap(copyGroup[index], copyGroup[right]);//将基准元割离出待排序部分
+	--j;
+	while (i <= j)
 	{
-		while (j > i&&key <= copyGroup[j])
+		while (key < copyGroup[j])
 			--j;//找到右侧第一个小于基准元的数
-		while (i < j&&key >= copyGroup[i])
+		while (key > copyGroup[i])
 			++i;//找到左侧第一个大于基准元的数
-		if (i < j)//如果两数未重叠，则交换它们的值
+		if (i < j)//如果两数未交错，则交换它们的值
 		{
 			swap(copyGroup[i], copyGroup[j]);
 			++total;
+			++i;
+			--j;
 		}
+		else//若交错，则退出循环
+			break;
 	}
-	swap(copyGroup[i], copyGroup[left]);//基准元归位
+	swap(copyGroup[i], copyGroup[right]);//基准元归位
 	++total;
 
 	quickSort(left, i - 1);//继续处理左半部分
