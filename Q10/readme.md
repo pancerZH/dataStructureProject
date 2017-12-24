@@ -313,3 +313,82 @@ void Sort::percDown(const int downIndex, const int endIndex)
 ```  
 我们将下滤的算法单独摘出来，是为了便于理解，增加代码的可读性。对于时间复杂度的分析也是容易的：建堆的时间复杂度为O(n)；每次下滤的时间复杂度为O(logn)，删除的过程共执行(n-1)次下滤，则总的时间复杂度为O(nlogn)。在最坏情况下和平均情况下的时间复杂度都是如此。  
 堆排序不是递归算法，也不需要额外的存储空间（辅助数组），所以其空间复杂度为O(1)。
+
+#### 7. 归并排序  
+归并排序是建立在归并操作基础上的一种排序方法，而归并操作是典型的分治算法的应用。除此之外，我们所熟知的二分查找也是一种典型的分治算法应用。在归并操作中，我们有三个主要步骤：  
+1. 分解：将要解决的问题划分为几个要解决的子问题
+2. 求解：当子问题足够小时，对问题进行求解
+3. 合并：将子问题的解按顺序合并，即得到原问题的解
+
+具体到归并排序中，我们这样操作：将一个大的待排序数组一分为二，得到两个子数组，再将两个子数组分别一分为二，得到四个子数组……如此操作，直到得到的子数组中只有一个元素，此时子数组中的排序任务自动完成。接下来我们将排好序的子数组按递归的层次顺序进行合并，最终就得到了一个有序的数组。  
+对两个有序数组的合并操作是极容易的。由于我们没有采用链表的形式储存元素，所以我们需要一个辅助数组储存合并之后的结果；而且，为了避免每次进行荷包那个操作都要申请新的空间，我们在算法开始之初，就申请一个足够大的数组空间用于存放中间结果，这就节省了多次new运算的开销。  
+代码如下  
+```c++
+void Sort::merge()
+{
+	copyNumGroup();//将数据复制到操作数组中
+	this->total = 0;//比较计数归0
+	clock_t start, finish;
+
+	start = clock();
+	int* tempArr = new int[size];
+	if (tempArr == NULL)
+	{
+		cerr << "内存空间不足！" << endl;
+		exit(1);
+	}
+
+	divideMerge(tempArr, 0, size - 1);
+	delete[] tempArr;
+	tempArr = NULL;
+	finish = clock();
+
+	cout << "归并排序所用时间：\t" << float(finish - start) / CLOCKS_PER_SEC << endl;
+	cout << "归并排序比较次数：\t" << total << endl;
+	check();
+}
+
+void Sort::divideMerge(int* tempArr, const int left, const int right)
+{
+	int center;
+	if (left < right)//传入的部分可以继续划分
+	{
+		center = (left + right) / 2;
+		/*划分为left~center部分，center成为新的right*/
+		divideMerge(tempArr, left, center);
+		/*划分为center+1~right部分，center+1成为新的left*/
+		divideMerge(tempArr, center + 1, right);
+		/*将两部分合并*/
+		mergeTwoPart(tempArr, left, center + 1, right);
+	}
+}
+
+void Sort::mergeTwoPart(int* tempArr, int left, int right, int rightEnd)
+{
+	int leftEnd = right - 1;//左边部分的结尾位于right前一位
+	int tempPos = left;//临时数组的索引位置
+	int numOfElem = rightEnd - left + 1;//两个数组中元素的总数
+
+	while (left <= leftEnd && right <= rightEnd)//任意一部分未被检测完时
+	{
+		++total;
+		if (copyGroup[left] < copyGroup[right])//找出两部分数组中对应位置上较小的
+			tempArr[tempPos++] = copyGroup[left++];//将左边数组上的数字放入临时数组
+		else
+			tempArr[tempPos++] = copyGroup[right++];
+	}
+
+	/*下面两个while只可能执行一个，目的是将未检测完的那个数组插入临时数组*/
+	while (left <= leftEnd)//将左边数组剩余部分顺序插入临时数组
+		tempArr[tempPos++] = copyGroup[left++];
+	while (right <= rightEnd)//将右边数组剩余部分顺序插入临时数组
+		tempArr[tempPos++] = copyGroup[right++];
+
+	/*将排序好的元素从临时数组中拷贝回操作数组*/
+	for (int i = 0;i < numOfElem;++i, --rightEnd)
+		copyGroup[rightEnd] = tempArr[rightEnd];
+}
+```  
+相比其它算法，归并排序的算法实现略微复杂一些。首先，归并排序是一种递归算法，所以它需要一个驱动函数；其次，合并两个有序数组的操作略显冗长，所以我将其独立为一个函数。另外值得注意的一点是，辅助数组名为tempArr，当归并排序的所有递归操作完成后，它实际上也是有序的了（因为我们确保了每次合并只会在要合并的数组自己的部分进行，不会干扰到其它区域）。所以如果单独调用归并排序，就可以省掉“将排序好的元素从临时数组中拷贝回操作数组”这一操作，但是这里因为是使用类内成员进行操作，所以必须进行拷贝，不然check操作会出现错误。  
+归并操作的时间复杂度是极为优秀的。由于我们将子数组细分到只有一个元素为止，所以实质上不存在最坏情况与平均情况之分：因为根本没有`排序`这个操作。将待排序数组进行划分的时间复杂度为O(logn)，而合并两个有序数组的时间复杂度为O(n)，且一次合并对应一次划分，所以总的时间复杂度为O(nlogn)。  
+归并操作的辅助数组占用的空间为O(n)，递归时消耗的栈空间为O(logn)，所以其总的时间复杂度为O(n)。可见，在已给出的几种算法中，归并排序的空间复杂度是最高的。但是相对的，归并排序在实践中的速度仅次于快速排序，是一种十分高效、容易理解的排序算法。
