@@ -506,8 +506,14 @@ void Sort::radix()//LSD方法实现
 
 int Sort::maxBit()
 {
+	int maxNum = 0;
+	for (int i = 0;i < size;++i)
+	{
+		if (maxNum < copyGroup[i])
+			maxNum = copyGroup[i];
+	}
 	int max = 1, ruler = 10;
-	while (size - 1 >= ruler)
+	while (maxNum >= ruler)
 	{
 		++max;
 		ruler *= 10;
@@ -515,7 +521,7 @@ int Sort::maxBit()
 	return max;
 }
 ```  
-其中，maxBit的作用是计算待排序序列中最大元素的位数。我们在这里默认了一个事实：元素的个数即为最大元素的大小，严格来讲这是不对，在这里实际上只能保证最大元素大小不大于元素个数。这完全是为了简化代码。  
+其中，maxBit的作用是计算待排序序列中最大元素的位数。    
 基数排序的时间复杂度为O(d(n+r))，其中d为最大元素的位数，r为基数的个数，这里为10(0~9)。  
 基数排序的空间需求在于两个辅助数组，分别用于储存中间过程的结果和每个基数对应的开始位置，故空间复杂度为O(n+r)。  
 由于我们保证了前i位有序的数字的相对位置不变，所以基数排序是一种稳定的排序算法。
