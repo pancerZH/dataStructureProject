@@ -454,8 +454,14 @@ void Sort::radix()//LSD方法实现
 
 int Sort::maxBit()
 {
+	int maxNum = 0;
+	for (int i = 0;i < size;++i)
+	{
+		if (maxNum < copyGroup[i])
+			maxNum = copyGroup[i];
+	}
 	int max = 1, ruler = 10;
-	while (size - 1 >= ruler)
+	while (maxNum >= ruler)
 	{
 		++max;
 		ruler *= 10;
