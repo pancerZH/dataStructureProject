@@ -546,3 +546,46 @@ int Sort::maxBit()
 |归并排序|O(nlogn)|O(nlogn)|O(n)|不稳定|
 |桶排序|O(n)|O(n)|O(n)|稳定|
 |基数排序|O(d(n+r))|O(d(n+r))|O(n+r)|稳定|
+
+### 4. 类实现逻辑  
+类成员情况：  
+|成员名称|属性|类型|描述|
+|-------|----|----|---|
+|size|private|int|记录待排序元素的个数|
+|numGroup|private|int*|指向待排序数组的指针|
+|copyGroup|private|int*|指向复制的待排序数组的指针|
+|total|private|int|记录排序中交换或比较的次数|
+
+注意，对象的私有变量中有两个数组用于储存待排序的元素，其中，numGroup是储存的“仓库”，里面的元素的大小和位置是不允许修改的，当需要调用某一算法进行排序时，要先将numGroup中的数字复制到copyGroup中去，在copyGroup中进行排序操作，copyGroup相当于是工作空间。  
+另外，类中还有一个辅助函数check()，用于检查排序后copyGroup中的数列是否已经有序（这里是升序）。  
+```c++
+bool Sort::check()
+{
+	for (int i = 0;i < size - 1;++i)
+	{
+		if (copyGroup[i] > copyGroup[i + 1])//发现未排好序的数字
+		{
+			cout << "排序失败！" << endl;
+			return false;
+		}
+	}
+	cout << "排序成功！" << endl;
+	return true;
+}
+```
+
+### 5. 容错测试  
+本项目的错误主要来源于输入随机数数量出错  
+```c++
+cout << endl << "请输入要产生的随机数的个数：";
+int num;
+cin >> num;
+while (cin.fail() || num < 1)
+{
+	cerr << "请输入大于0小于INT_MAX的随机数个数！" << endl;
+	cin.clear();
+	cin.ignore();
+	cin >> num;
+}
+```
+![image](./image/input_error.PNG)
